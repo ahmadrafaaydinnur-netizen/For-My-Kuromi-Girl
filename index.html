@@ -496,6 +496,9 @@
 </head>
 <body>
 
+    <!-- Hidden Background YouTube Player Div -->
+    <div id="youtube-player" style="position: absolute; width: 1px; height: 1px; opacity: 0.01; left: -100px; top: -100px; pointer-events: none;"></div>
+
     <div class="decorations">
         <span class="floating-emoji" style="top: 8%; left: 8%; animation-delay: 0s;">💀</span>
         <span class="floating-emoji" style="top: 12%; right: 10%; animation-delay: 2s;">🖤</span>
@@ -508,7 +511,7 @@
     <div class="quiz-container">
         
         <!-- Music Toggle Widget -->
-        <div class="music-control-widget" id="music-toggle-btn" onclick="toggleMusic()" title="Play Sanrio Theme">
+        <div class="music-control-widget" id="music-toggle-btn" onclick="toggleMusic()" title="Play I'd Like to Watch You Sleeping - Sal Priadi">
             <i class="fa-solid fa-music"></i>
         </div>
 
@@ -528,7 +531,7 @@
             <!-- SCREEN START -->
             <div class="screen-card active" id="screen-start">
                 <p class="question-text" style="font-size: 16px; font-family: 'Quicksand', sans-serif; line-height: 1.5;">
-                    Hai Sayamg! Akuw punya kuis buat kamu. Ready? 💀😈
+                    Hai Denaya! Rafa punya kuis lucu bertema Kuromi buat kamu. Jawab semua pertanyaan tentang Rafa dengan benar buat dapetin kejutan spesial ya! Ready? 💀😈
                 </p>
                 <button class="action-btn" onclick="startQuiz()">Mulai Sekarang 💜</button>
             </div>
@@ -855,114 +858,119 @@
             document.getElementById('kuromi-avatar-frame').innerHTML = getKuromiAvatarSVG(expr);
         }
 
-        // Robust Web Audio API Synthesizer (Zero External Dependencies)
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        let bgmInterval = null;
+        let ytPlayer;
         let isMusicPlaying = false;
-        let currentNoteIndex = 0;
+        let playTimer;
 
-        // Sweet, cheerful, bouncy custom Sanrio chiptune melody
-        const sanrioBgmNotes = [
-            329.63, 392.00, 440.00, 392.00, 329.63, 261.63, 293.66, 329.63, // E5, G5, A5, G5, E5, C5, D5, E5
-            293.66, 261.63, 293.66, 329.63, 392.00, 440.00, 392.00, 329.63, // D5, C5, D5, E5, G5, A5, G5, E5
-            440.00, 523.25, 440.00, 392.00, 329.63, 293.66, 261.63, 293.66, // A5, C6, A5, G5, E5, D5, C5, D5
-            329.63, 392.00, 293.66, 329.63, 261.63, 0,      261.63, 0       // E5, G5, D5, E5, C5, [Rest], C5, [Rest]
-        ];
+        // Load YouTube Iframe API asynchronously
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        function playBGMNote() {
-            if (!isMusicPlaying) return;
-            
-            const freq = sanrioBgmNotes[currentNoteIndex];
-            currentNoteIndex = (currentNoteIndex + 1) % sanrioBgmNotes.length;
-
-            if (freq === 0) return; // Silent rest beat
-
-            try {
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('youtube-player', {
+                height: '1',
+                width: '1',
+                videoId: '4OL6d6NZ3I0', // Official YouTube ID of Sal Priadi - I’d like to watch you sleeping
+                playerVars: {
+                    'playsinline': 1,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'loop': 1,
+                    'playlist': '4OL6d6NZ3I0'
+                },
+                events: {
+                    'onStateChange': onPlayerStateChange
                 }
-                const osc = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-                
-                // Cute music-box soft chiptune sound
-                osc.type = 'sine'; 
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                
-                // Whimsical decay envelope
-                gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-                
-                osc.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.4);
-            } catch (e) {
-                console.warn("BGM warning:", e);
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            const btn = document.getElementById('music-toggle-btn');
+            if (event.data === YT.PlayerState.PLAYING) {
+                isMusicPlaying = true;
+                btn.classList.add('playing');
+                btn.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
+
+                // Check duration and force limit exactly to 2 minutes (120 seconds)
+                clearInterval(playTimer);
+                playTimer = setInterval(() => {
+                    if (ytPlayer && ytPlayer.getCurrentTime() >= 120) {
+                        stopMusicGracefully();
+                    }
+                }, 1000);
+            } else {
+                isMusicPlaying = false;
+                btn.classList.remove('playing');
+                btn.innerHTML = '<i class="fa-solid fa-music"></i>';
+                clearInterval(playTimer);
             }
+        }
+
+        function stopMusicGracefully() {
+            if (ytPlayer) {
+                ytPlayer.pauseVideo();
+                ytPlayer.seekTo(0);
+            }
+            isMusicPlaying = false;
+            const btn = document.getElementById('music-toggle-btn');
+            btn.classList.remove('playing');
+            btn.innerHTML = '<i class="fa-solid fa-music"></i>';
+            clearInterval(playTimer);
         }
 
         function toggleMusic() {
-            const btn = document.getElementById('music-toggle-btn');
-            
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
+            if (!ytPlayer) return;
             if (isMusicPlaying) {
-                isMusicPlaying = false;
-                clearInterval(bgmInterval);
-                btn.classList.remove('playing');
-                btn.innerHTML = '<i class="fa-solid fa-music"></i>';
-                btn.title = "Play Sanrio Theme";
+                ytPlayer.pauseVideo();
             } else {
-                isMusicPlaying = true;
-                currentNoteIndex = 0;
-                // Play music beats every 230ms (tempo)
-                bgmInterval = setInterval(playBGMNote, 230);
-                btn.classList.add('playing');
-                btn.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
-                btn.title = "Pause Music";
+                ytPlayer.playVideo();
             }
         }
 
+        // Web Audio API Synth backup for sound effects (correct / incorrect beep sounds)
+        const sfxCtx = new (window.AudioContext || window.webkitAudioContext)();
+
         function playSound(type) {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
+            if (sfxCtx.state === 'suspended') {
+                sfxCtx.resume();
             }
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
+            const osc = sfxCtx.createOscillator();
+            const gain = sfxCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxCtx.destination);
 
             if (type === 'correct') {
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
-                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
-                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); 
-                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.frequency.setValueAtTime(523.25, sfxCtx.currentTime); 
+                osc.frequency.setValueAtTime(659.25, sfxCtx.currentTime + 0.1); 
+                osc.frequency.setValueAtTime(783.99, sfxCtx.currentTime + 0.2); 
+                gain.gain.setValueAtTime(0.12, sfxCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, sfxCtx.currentTime + 0.4);
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.4);
+                osc.stop(sfxCtx.currentTime + 0.4);
             } else if (type === 'wrong') {
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(160, audioCtx.currentTime);
-                osc.frequency.linearRampToValueAtTime(90, audioCtx.currentTime + 0.25);
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                osc.frequency.setValueAtTime(160, sfxCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(90, sfxCtx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.15, sfxCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, sfxCtx.currentTime + 0.25);
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.28);
+                osc.stop(sfxCtx.currentTime + 0.28);
             } else if (type === 'victory') {
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
-                osc.frequency.setValueAtTime(698.46, audioCtx.currentTime + 0.12); 
-                osc.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.24); 
-                osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime + 0.36); 
-                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                osc.frequency.setValueAtTime(587.33, sfxCtx.currentTime); 
+                osc.frequency.setValueAtTime(698.46, sfxCtx.currentTime + 0.12); 
+                osc.frequency.setValueAtTime(880.00, sfxCtx.currentTime + 0.24); 
+                osc.frequency.setValueAtTime(1046.50, sfxCtx.currentTime + 0.36); 
+                gain.gain.setValueAtTime(0.12, sfxCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, sfxCtx.currentTime + 0.6);
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.6);
+                osc.stop(sfxCtx.currentTime + 0.6);
             }
         }
 
@@ -972,9 +980,9 @@
             document.getElementById('album-container').style.display = 'block';
             document.getElementById('screen-question').classList.add('active');
             
-            // Automatically launch Sanrio melody when clicking Start!
-            if (!isMusicPlaying) {
-                toggleMusic();
+            // Auto play background YouTube video music on start
+            if (ytPlayer && !isMusicPlaying) {
+                ytPlayer.playVideo();
             }
             renderQuestion();
         }
@@ -991,12 +999,10 @@
             const qData = quizQuestions[currentQuestionIndex];
             document.getElementById('q-text').innerText = qData.question;
             
-            // Clear feedback nodes
             const feedbackTxt = document.getElementById('feedback-txt');
             feedbackTxt.style.display = 'none';
             feedbackTxt.innerText = '';
             
-            // Dynamic expression change on new question
             updateKuromiState('happy');
 
             const inputContainer = document.getElementById('input-container');
@@ -1033,7 +1039,6 @@
             }
         }
 
-        // Handle typing responses
         function handleSubmit() {
             const qData = quizQuestions[currentQuestionIndex];
             
@@ -1095,13 +1100,12 @@
             }
         }
 
-        // Handle multiple-choice responses
         function handleChoiceSelection(selectedVal, clickedBtn) {
             const qData = quizQuestions[currentQuestionIndex];
             const feedback = document.getElementById('feedback-txt');
             const allBtns = document.querySelectorAll('#options-container .option-btn');
 
-            allBtns.forEach(btn => btn.disabled = true); // lock clicks
+            allBtns.forEach(btn => btn.disabled = true); 
 
             const isCorrect = (selectedVal === qData.correctAnswer);
 
