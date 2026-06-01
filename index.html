@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuromi Quiz Spesial untuk Denaya 🖤💜</title>
+    <title>Kuis Kuromi Spesial untuk Denaya 🖤💜</title>
     
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,13 +12,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* --- Kustomisasi Tema Kuromi (Purple, Pink & Dark Aesthetic) --- */
         :root {
-            --bg-color: #171123;
-            --card-bg: #251b37;
+            --bg-color: #0f0b18;
+            --card-bg: #1d152a;
             --primary-purple: #9b5de5;
             --kuromi-pink: #f15bb5;
-            --kuromi-black: #110d1a;
+            --kuromi-black: #08060c;
             --text-light: #f3e8ff;
             --accent-pink: #fee2e2;
             --success-green: #10b981;
@@ -34,8 +33,9 @@
         body {
             background-color: var(--bg-color);
             background-image: 
-                radial-gradient(circle at 20% 30%, rgba(155, 93, 229, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(241, 91, 181, 0.2) 0%, transparent 40%);
+                radial-gradient(circle at 10% 20%, rgba(155, 93, 229, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(241, 91, 181, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(15, 11, 24, 0.8) 0%, #08060c 100%);
             font-family: 'Fredoka', 'Quicksand', sans-serif;
             display: flex;
             justify-content: center;
@@ -46,7 +46,6 @@
             padding: 20px;
         }
 
-        /* --- Animasi Background Tengkorak / Hati Melayang --- */
         .decorations {
             position: absolute;
             width: 100%;
@@ -54,112 +53,187 @@
             top: 0;
             left: 0;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1;
+            overflow: hidden;
         }
 
         .floating-emoji {
             position: absolute;
-            font-size: 24px;
+            font-size: 26px;
             opacity: 0.15;
-            animation: floatUpDown 6s ease-in-out infinite alternate;
+            animation: floatUpDown 5s ease-in-out infinite alternate;
         }
 
         @keyframes floatUpDown {
-            0% { transform: translateY(0px) rotate(0deg); }
-            100% { transform: translateY(-30px) rotate(15deg); }
+            0% { transform: translateY(0px) rotate(0deg) scale(1); }
+            100% { transform: translateY(-40px) rotate(20deg) scale(1.1); }
         }
 
-        /* --- Container Utama --- */
+        /* Sanrio Floating Music Button Control */
+        .music-control-widget {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--kuromi-black);
+            border: 2px solid var(--primary-purple);
+            color: var(--kuromi-pink);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(155, 93, 229, 0.3);
+        }
+
+        .music-control-widget:hover {
+            transform: scale(1.15);
+            border-color: var(--kuromi-pink);
+            box-shadow: 0 0 15px var(--kuromi-pink);
+        }
+
+        .music-control-widget.playing i {
+            animation: spinVinyl 3.5s linear infinite;
+            color: var(--kuromi-pink);
+            text-shadow: 0 0 8px var(--kuromi-pink);
+        }
+
+        @keyframes spinVinyl {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .quiz-container {
             background-color: var(--card-bg);
             border: 4px solid var(--primary-purple);
             border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(155, 93, 229, 0.3);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.7), 
+                0 0 30px rgba(155, 93, 229, 0.4),
+                inset 0 0 15px rgba(241, 91, 181, 0.15);
             width: 100%;
             max-width: 480px;
-            padding: 35px 25px;
+            padding: 30px 22px;
             text-align: center;
             position: relative;
             z-index: 10;
-            overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* --- Header & Karakter Kuromi --- */
+        .quiz-container::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--kuromi-pink));
+            z-index: -1;
+            border-radius: 32px;
+            opacity: 0.3;
+        }
+
         .kuromi-header {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             position: relative;
         }
 
-        .kuromi-img {
-            width: 130px;
-            height: 130px;
-            object-fit: contain;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
-            animation: bounce 3s ease-in-out infinite;
+        .avatar-frame {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 10px;
+            position: relative;
+            background: radial-gradient(circle, rgba(241, 91, 181, 0.25) 0%, transparent 75%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .kuromi-svg {
+            width: 140px;
+            height: 140px;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6));
+            animation: bounce 4s ease-in-out infinite;
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.03); }
         }
 
         .skull-divider {
             color: var(--kuromi-pink);
-            font-size: 22px;
-            margin: 10px 0;
+            font-size: 20px;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .skull-divider::before, .skull-divider::after {
+            content: '';
+            height: 2px;
+            width: 50px;
+            background: linear-gradient(90deg, transparent, var(--kuromi-pink));
+        }
+
+        .skull-divider::after {
+            background: linear-gradient(-90deg, transparent, var(--kuromi-pink));
         }
 
         h1 {
-            font-size: 26px;
+            font-size: 24px;
             color: var(--kuromi-pink);
             text-shadow: 2px 2px 0px var(--kuromi-black);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
         }
 
         p.subtitle {
             font-family: 'Quicksand', sans-serif;
-            font-size: 15px;
-            color: #c084fc;
+            font-size: 14px;
+            color: #bd93f9;
+            font-weight: 500;
         }
 
-        /* --- Card Kuis & Pertanyaan --- */
-        .question-card {
+        .screen-card {
             display: none;
-            animation: fadeIn 0.5s ease-in-out forwards;
+            animation: slideIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
         }
 
-        .question-card.active {
+        .screen-card.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .question-text {
-            font-size: 20px;
-            margin-bottom: 20px;
+            font-size: 19px;
+            margin-bottom: 18px;
             line-height: 1.4;
             font-weight: 600;
+            color: #f3e8ff;
         }
 
-        /* --- Form Input & Feedback --- */
         .input-wrapper {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .ans-input {
             width: 100%;
-            padding: 15px 20px;
+            padding: 14px 20px;
             border-radius: 50px;
-            border: 3px solid #4a346b;
+            border: 3px solid #3b2c56;
             background-color: var(--kuromi-black);
             color: var(--text-light);
             font-family: 'Fredoka', sans-serif;
-            font-size: 18px;
+            font-size: 17px;
             text-align: center;
             outline: none;
             transition: all 0.3s ease;
@@ -167,10 +241,9 @@
 
         .ans-input:focus {
             border-color: var(--primary-purple);
-            box-shadow: 0 0 10px rgba(155, 93, 229, 0.5);
+            box-shadow: 0 0 15px rgba(155, 93, 229, 0.5);
         }
 
-        /* Status Benar / Salah */
         .ans-input.error {
             border-color: var(--error-red) !important;
             background-color: #3b141a !important;
@@ -196,58 +269,59 @@
         .feedback-message {
             font-size: 14px;
             font-family: 'Quicksand', sans-serif;
-            margin-top: -10px;
+            margin-top: -8px;
             margin-bottom: 15px;
+            font-weight: bold;
             display: none;
         }
 
-        /* --- Tombol Pilihan Ganda (Kucing Rafa) --- */
         .options-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .option-btn {
-            background-color: #3b2c56;
-            border: 2px solid #5a4282;
+            background-color: #2a1f3d;
+            border: 2px solid #503d73;
             color: var(--text-light);
             padding: 14px 20px;
             border-radius: 50px;
             font-family: 'Fredoka', sans-serif;
-            font-size: 17px;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            outline: none;
         }
 
-        .option-btn:hover {
-            background-color: #4c396e;
-            border-color: var(--primary-purple);
+        .option-btn:hover:not(:disabled) {
+            background-color: #3a2c54;
+            border-color: var(--kuromi-pink);
+            transform: translateY(-2px);
         }
 
         .option-btn.wrong {
-            background-color: var(--error-red);
-            border-color: #b91c1c;
+            background-color: var(--error-red) !important;
+            border-color: #b91c1c !important;
             animation: shake 0.4s ease;
         }
 
         .option-btn.correct {
-            background-color: var(--success-green);
-            border-color: #047857;
+            background-color: var(--success-green) !important;
+            border-color: #047857 !important;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
         }
 
-        /* --- Animasi Shake (Salah) --- */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
         }
 
-        /* --- Tombol Navigasi Utama --- */
         .action-btn {
             background: linear-gradient(135deg, var(--primary-purple), var(--kuromi-pink));
             color: white;
@@ -255,31 +329,32 @@
             padding: 14px 35px;
             border-radius: 50px;
             font-family: 'Fredoka', sans-serif;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(241, 91, 181, 0.4);
+            box-shadow: 0 6px 16px rgba(241, 91, 181, 0.35);
             transition: all 0.2s ease;
             width: 100%;
+            outline: none;
         }
 
         .action-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(241, 91, 181, 0.6);
+            box-shadow: 0 8px 22px rgba(241, 91, 181, 0.55);
         }
 
         .action-btn:active {
             transform: translateY(0);
         }
 
-        /* --- Progress Bar --- */
         .progress-container {
             width: 100%;
-            height: 8px;
-            background-color: #110d1a;
+            height: 10px;
+            background-color: var(--kuromi-black);
             border-radius: 10px;
-            margin-top: 30px;
+            margin-top: 25px;
             overflow: hidden;
+            border: 1px solid rgba(155, 93, 229, 0.2);
             display: none;
         }
 
@@ -287,189 +362,572 @@
             height: 100%;
             background: linear-gradient(90deg, var(--primary-purple), var(--kuromi-pink));
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 8px var(--kuromi-pink);
         }
 
-        /* --- Slide Menghindar Akhir --- */
         .dodge-container {
             position: relative;
-            height: 120px;
-            margin-top: 25px;
+            height: 130px;
+            margin-top: 20px;
         }
 
         #btn-no {
             position: absolute;
-            transition: all 0.15s ease;
-            background-color: #4a3c61;
-            border: 2px solid #5d4b7a;
+            transition: all 0.15s cubic-bezier(0.19, 1, 0.22, 1);
+            background: #251b37;
+            border: 2px solid #5a4282;
+            color: #d8b4fe;
             box-shadow: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 15px;
         }
 
         #btn-yes {
             position: absolute;
-            left: 10%;
-            width: 120px;
+            left: 5%;
+            width: auto;
+            min-width: 140px;
+            z-index: 10;
         }
 
-        /* --- Halaman Sukses --- */
+        /* Sticker Album Styles */
+        .sticker-album {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px dashed rgba(155, 93, 229, 0.3);
+            text-align: left;
+        }
+
+        .album-title {
+            font-size: 13px;
+            color: #a881d8;
+            margin-bottom: 10px;
+            text-align: center;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .sticker-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .sticker-slot {
+            aspect-ratio: 1;
+            background-color: var(--kuromi-black);
+            border: 2px dashed #4a346b;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sticker-slot.unlocked {
+            border: 2px solid var(--kuromi-pink);
+            background: radial-gradient(circle, rgba(241, 91, 181, 0.15) 0%, transparent 80%);
+            box-shadow: 0 0 8px rgba(241, 91, 181, 0.3);
+            animation: popSticker 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popSticker {
+            from { transform: scale(0.6); }
+            to { transform: scale(1); }
+        }
+
+        .sticker-slot i {
+            font-size: 14px;
+            color: #4a346b;
+        }
+
+        .sticker-slot svg {
+            width: 80%;
+            height: 80%;
+            display: none;
+        }
+
+        .sticker-slot.unlocked svg {
+            display: block;
+        }
+
+        .sticker-slot.unlocked i {
+            display: none;
+        }
+
         .heart-pulse {
-            font-size: 60px;
+            font-size: 65px;
             color: var(--kuromi-pink);
             animation: pulse 1.2s infinite;
             margin-bottom: 15px;
+            display: inline-block;
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--kuromi-pink)); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 15px var(--kuromi-pink)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--kuromi-pink)); }
         }
 
-        /* --- Responsivitas HP --- */
+        /* Responsive Design Rules */
         @media (max-width: 480px) {
             .quiz-container {
-                padding: 25px 15px;
+                padding: 25px 18px;
             }
             h1 {
-                font-size: 22px;
+                font-size: 21px;
             }
             .question-text {
-                font-size: 18px;
+                font-size: 16px;
+            }
+            .sticker-slot i {
+                font-size: 11px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Dekorasi Latar Belakang Melayang -->
     <div class="decorations">
-        <span class="floating-emoji" style="top: 10%; left: 10%; animation-delay: 0s;">💀</span>
-        <span class="floating-emoji" style="top: 15%; right: 15%; animation-delay: 2s;">🖤</span>
-        <span class="floating-emoji" style="top: 75%; left: 12%; animation-delay: 1.5s;">💜</span>
-        <span class="floating-emoji" style="top: 80%; right: 10%; animation-delay: 3s;">😈</span>
-        <span class="floating-emoji" style="top: 45%; left: 5%; animation-delay: 0.5s;">🦇</span>
-        <span class="floating-emoji" style="top: 50%; right: 5%; animation-delay: 2.5s;">⭐</span>
+        <span class="floating-emoji" style="top: 8%; left: 8%; animation-delay: 0s;">💀</span>
+        <span class="floating-emoji" style="top: 12%; right: 10%; animation-delay: 2s;">🖤</span>
+        <span class="floating-emoji" style="top: 75%; left: 10%; animation-delay: 1.5s;">💜</span>
+        <span class="floating-emoji" style="top: 82%; right: 8%; animation-delay: 3s;">😈</span>
+        <span class="floating-emoji" style="top: 45%; left: 4%; animation-delay: 0.5s;">🦇</span>
+        <span class="floating-emoji" style="top: 52%; right: 4%; animation-delay: 2.5s;">✨</span>
     </div>
 
-    <!-- Kotak Kuis Utama -->
     <div class="quiz-container">
         
-        <!-- Header Kuromi -->
+        <!-- Music Toggle Widget -->
+        <div class="music-control-widget" id="music-toggle-btn" onclick="toggleMusic()" title="Play Sanrio Theme">
+            <i class="fa-solid fa-music"></i>
+        </div>
+
+        <!-- Header Section with Dynamic SVG Avatar -->
         <div class="kuromi-header">
-            <!-- Karakter Kuromi Estetik -->
-            <img class="kuromi-img" id="kuromi-state-img" src="http://googleusercontent.com/image_collection/image_retrieval/17856758310550894523_0" alt="Kuromi">
-            <div class="skull-divider"><i class="fa-solid fa-skull-crossbones"></i></div>
+            <div class="avatar-frame" id="kuromi-avatar-frame">
+                <!-- SVG injected dynamically by javascript -->
+            </div>
+            <div class="skull-divider"><i class="fa-solid fa-skull"></i></div>
             <h1 id="quiz-main-title">Kuromi Quiz</h1>
             <p class="subtitle" id="quiz-sub-title">Spesial untuk Denaya Cantik 🖤</p>
         </div>
 
-        <!-- SCREEN MULAI (START) -->
-        <div class="question-card active" id="screen-start">
-            <p class="question-text" style="font-size: 17px; font-family: 'Quicksand', sans-serif;">
-                Hai Denaya! Rafa punya tantangan kuis lucu buat kamu. Jawab semua pertanyaan tentang Rafa dengan benar buat dapetin kejutan spesial ya! Ready? 💀😈
-            </p>
-            <button class="action-btn" onclick="startQuiz()">Mulai Sekarang 💜</button>
-        </div>
-
-        <!-- PERTANYAAN 1: Warna Kesukaan Rafa -->
-        <div class="question-card" id="q1">
-            <p class="question-text">1. Rafa suka warna apa? 🤔</p>
-            <div class="input-wrapper">
-                <input type="text" class="ans-input" id="input-q1" placeholder="Ketik jawabannya di sini..." autocomplete="off">
-                <span class="feedback-icon" id="icon-q1"></span>
+        <!-- Dynamic Game Board -->
+        <div id="game-board">
+            
+            <!-- SCREEN START -->
+            <div class="screen-card active" id="screen-start">
+                <p class="question-text" style="font-size: 16px; font-family: 'Quicksand', sans-serif; line-height: 1.5;">
+                    Hai Denaya! Rafa punya kuis lucu bertema Kuromi buat kamu. Jawab semua pertanyaan tentang Rafa dengan benar buat dapetin kejutan spesial ya! Ready? 💀😈
+                </p>
+                <button class="action-btn" onclick="startQuiz()">Mulai Sekarang 💜</button>
             </div>
-            <div class="feedback-message" id="feed-q1"></div>
-            <button class="action-btn" id="btn-q1" onclick="validateTextAnswer(1, 'biru', 'Aww salah, warna favorit Rafa bukan itu! 😜')">Kirim Jawaban 🖤</button>
-        </div>
 
-        <!-- PERTANYAAN 2: Nama Kucing Rafa (Pilihan Ganda) -->
-        <div class="question-card" id="q2">
-            <p class="question-text">2. Siapa nama kucing Rafa yang paling besar? 🐱</p>
-            <div class="options-container">
-                <button class="option-btn" id="opt-incess" onclick="selectOption('Incess', false, this)">
-                    <span>Incess</span> <i class="fa-solid" id="icon-opt-incess"></i>
-                </button>
-                <button class="option-btn" id="opt-kroos" onclick="selectOption('Kroos', true, this)">
-                    <span>Kroos</span> <i class="fa-solid" id="icon-opt-kroos"></i>
-                </button>
-                <button class="option-btn" id="opt-abu" onclick="selectOption('Abu', false, this)">
-                    <span>Abu</span> <i class="fa-solid" id="icon-opt-abu"></i>
-                </button>
+            <!-- DYNAMIC QUESTION WRAPPER (Populated by JavaScript) -->
+            <div class="screen-card" id="screen-question">
+                <p class="question-text" id="q-text">Pertanyaan...</p>
+                
+                <!-- Wrapper for text answers -->
+                <div id="input-container" style="display: none;">
+                    <div class="input-wrapper">
+                        <input type="text" class="ans-input" id="answer-field" autocomplete="off">
+                        <span class="feedback-icon" id="validation-icon"></span>
+                    </div>
+                </div>
+
+                <!-- Wrapper for multiple choice answers -->
+                <div id="options-container" class="options-container" style="display: none;"></div>
+
+                <div class="feedback-message" id="feedback-txt"></div>
+                <button class="action-btn" id="next-submit-btn" onclick="handleSubmit()">Kirim Jawaban 🖤</button>
             </div>
-            <div class="feedback-message" id="feed-q2"></div>
-            <button class="action-btn" id="btn-next-q2" style="display: none;" onclick="goToNext(2)">Lanjut Pertanyaan berikutnya ✨</button>
-        </div>
 
-        <!-- PERTANYAAN 3: Tanggal Lahir Rafa -->
-        <div class="question-card" id="q3">
-            <p class="question-text">3. Berapa tanggal lahir Rafa? 🎂</p>
-            <div class="input-wrapper">
-                <input type="text" class="ans-input" id="input-q3" placeholder="Contoh: 5 April" autocomplete="off">
-                <span class="feedback-icon" id="icon-q3"></span>
+            <!-- DODGE LOVE SCREEN -->
+            <div class="screen-card" id="screen-love">
+                <p class="question-text">Yeayy kuisnya beres! Tapi sebelum dapet hadiahnya... Denaya sayang Rafa gak? 🥺💜</p>
+                <div class="dodge-container">
+                    <button class="action-btn" id="btn-yes" onclick="finishQuiz()">Sayang Banget! 🥰</button>
+                    <button class="action-btn" id="btn-no" onmouseover="dodgeButton()" onclick="dodgeButton()" ontouchstart="dodgeButton(event)">Enggak 😜</button>
+                </div>
             </div>
-            <div class="feedback-message" id="feed-q3"></div>
-            <button class="action-btn" id="btn-q3" onclick="validateDateAnswer()">Kirim Jawaban 🖤</button>
-        </div>
 
-        <!-- PERTANYAAN 4: Hobby Rafa -->
-        <div class="question-card" id="q4">
-            <p class="question-text">4. Apa Hobby Rafa? 🏹</p>
-            <div class="input-wrapper">
-                <input type="text" class="ans-input" id="input-q4" placeholder="Ketik hobbynya..." autocomplete="off">
-                <span class="feedback-icon" id="icon-q4"></span>
+            <!-- SUCCESS CELEBRATION -->
+            <div class="screen-card" id="screen-success">
+                <div class="heart-pulse"><i class="fa-solid fa-heart"></i></div>
+                <h1 style="color: var(--kuromi-pink); margin-bottom: 12px; font-size: 26px;">Happy Ending! 💖</h1>
+                <p class="question-text" id="final-message-text" style="font-size: 17px; font-family: 'Quicksand', sans-serif; line-height: 1.6; margin-bottom: 20px;">
+                    You Know Me So Well sayang, I hope we can still together for ever. 🖤😈✨
+                </p>
+                <div class="skull-divider"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <p style="font-size: 13px; color: #a881d8; font-style: italic;">Made with love by Rafa</p>
             </div>
-            <div class="feedback-message" id="feed-q4"></div>
-            <button class="action-btn" id="btn-q4" onclick="validateTextAnswer(4, 'panahan', 'Duh tebakanmu meleset nih, bukan itu! 🏹❌')">Kirim Jawaban 🖤</button>
+
         </div>
 
-        <!-- PERTANYAAN 5: Mobil Kesukaan Rafa -->
-        <div class="question-card" id="q5">
-            <p class="question-text">5. Rafa suka mobil apa? 🏎️</p>
-            <div class="input-wrapper">
-                <input type="text" class="ans-input" id="input-q5" placeholder="Merk mobil impian Rafa..." autocomplete="off">
-                <span class="feedback-icon" id="icon-q5"></span>
-            </div>
-            <div class="feedback-message" id="feed-q5"></div>
-            <button class="action-btn" id="btn-q5" onclick="validateTextAnswer(5, 'ferrari', 'Bukan itu sayangg, coba ingat mobil warna merah! 🏎️❌')">Kirim Jawaban 🖤</button>
-        </div>
-
-        <!-- SCREEN INTERAKTIF (PERNYATAAN CINTA & TOMBOL MENGHINDAR) -->
-        <div class="question-card" id="screen-love">
-            <p class="question-text">Yeayy kuisnya beres! Tapi sebelum dapet hadiahnya... Denaya sayang Rafa gak? 🥺💜</p>
-            <div class="dodge-container">
-                <button class="action-btn" id="btn-yes" onclick="finishQuiz()">Sayang Banget! 🥰</button>
-                <button class="action-btn" id="btn-no" onmouseover="dodgeButton()" onclick="dodgeButton()">Enggak 😜</button>
-            </div>
-        </div>
-
-        <!-- SCREEN AKHIR (SUCCESS CELEBRATION) -->
-        <div class="question-card" id="screen-success">
-            <div class="heart-pulse"><i class="fa-solid fa-heart"></i></div>
-            <h1 style="color: var(--kuromi-pink); margin-bottom: 15px;">Happy End! 💖👑</h1>
-            <p class="question-text" style="font-size: 16px; font-family: 'Quicksand', sans-serif; line-height: 1.6; margin-bottom: 25px;">
-                Yayyy! Denaya hebat banget udah berhasil menjawab semuanya dengan sempurna! Makasih ya sayang udah kenal Rafa sebaik ini. Rafa juga sayangggg banget sama Denaya! 🖤😈✨
-            </p>
-            <div class="skull-divider"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-            <p style="font-size: 14px; color: #a881d8; font-style: italic;">Made with love by Rafa</p>
-        </div>
-
-        <!-- Progress Indicator -->
+        <!-- Interactive Progress Bar -->
         <div class="progress-container" id="progress-container">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
 
+        <!-- SVG Sticker Book (Guaranteed to load instantly!) -->
+        <div class="sticker-album" id="album-container" style="display: none;">
+            <div class="album-title">
+                <i class="fa-solid fa-book-open"></i> Album Sticker Kuromi Denaya
+            </div>
+            <div class="sticker-grid">
+                <!-- Slot 1 -->
+                <div class="sticker-slot" id="slot-1">
+                    <i class="fa-solid fa-lock"></i>
+                    <!-- Sticker 1 SVG (Cute Kuromi Cap Icon) -->
+                    <svg viewBox="0 0 100 100">
+                        <path d="M50 15 C30 15 20 28 20 50 C20 68 35 80 50 80 C65 80 80 68 80 50 C80 28 70 15 50 15 Z" fill="#25163c"/>
+                        <circle cx="28" cy="25" r="10" fill="#f15bb5"/>
+                        <circle cx="72" cy="25" r="10" fill="#f15bb5"/>
+                        <!-- White face inside hat -->
+                        <path d="M50 35 C38 35 32 45 32 55 C32 68 40 74 50 74 C60 74 68 68 68 55 C68 45 62 35 50 35 Z" fill="#ffffff"/>
+                        <!-- Pink skull crown emblem -->
+                        <circle cx="50" cy="27" r="7" fill="#f15bb5"/>
+                        <path d="M47 31 H53 L51 35 H49 Z" fill="#f15bb5"/>
+                        <circle cx="48" cy="26" r="1.5" fill="#ffffff"/>
+                        <circle cx="52" cy="26" r="1.5" fill="#ffffff"/>
+                        <!-- Cute face -->
+                        <ellipse cx="44" cy="53" rx="2.5" ry="3.5" fill="#08060c"/>
+                        <ellipse cx="56" cy="53" rx="2.5" ry="3.5" fill="#08060c"/>
+                        <path d="M48 60 Q50 63 52 60" stroke="#08060c" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <circle cx="40" cy="57" r="3" fill="rgba(241,91,181,0.5)"/>
+                        <circle cx="60" cy="57" r="3" fill="rgba(241,91,181,0.5)"/>
+                    </svg>
+                </div>
+                <!-- Slot 2 -->
+                <div class="sticker-slot" id="slot-2">
+                    <i class="fa-solid fa-lock"></i>
+                    <!-- Sticker 2 SVG (Pink Devil Heart) -->
+                    <svg viewBox="0 0 100 100">
+                        <!-- Background Heart -->
+                        <path d="M12 35 C12 18, 30 15, 50 32 C70 15, 88 18, 88 35 C88 58, 50 82, 50 82 C50 82, 12 58, 12 35 Z" fill="#f15bb5"/>
+                        <!-- Gothic Devil Horns on Heart -->
+                        <path d="M22 25 Q10 10 18 35 Z" fill="#08060c"/>
+                        <path d="M78 25 Q90 10 82 35 Z" fill="#08060c"/>
+                        <!-- Inner White Skull Emblem -->
+                        <circle cx="50" cy="45" r="12" fill="#ffffff"/>
+                        <rect x="44" y="52" width="12" height="8" rx="3" fill="#ffffff"/>
+                        <!-- Skull Eyes -->
+                        <circle cx="46" cy="44" r="2.5" fill="#f15bb5"/>
+                        <circle cx="54" cy="44" r="2.5" fill="#f15bb5"/>
+                        <path d="M49 50 H51 V54 H49 Z" fill="#f15bb5"/>
+                    </svg>
+                </div>
+                <!-- Slot 3 -->
+                <div class="sticker-slot" id="slot-3">
+                    <i class="fa-solid fa-lock"></i>
+                    <!-- Sticker 3 SVG (Kuromi Sweet Bat) -->
+                    <svg viewBox="0 0 100 100">
+                        <!-- Bat Wings -->
+                        <path d="M50 50 L10 32 Q25 45 28 55 Q18 62 10 58 L50 64 Z" fill="#25163c"/>
+                        <path d="M50 50 L90 32 Q75 45 72 55 Q82 62 90 58 L50 64 Z" fill="#25163c"/>
+                        <!-- Cute Center Purple Heart body -->
+                        <path d="M30 45 C30 35, 42 32, 50 42 C58 32, 70 35, 70 45 C70 58, 50 72, 50 72 C50 72, 30 58, 30 45 Z" fill="#9b5de5"/>
+                        <circle cx="45" cy="45" r="2" fill="#ffffff"/>
+                        <circle cx="55" cy="45" r="2" fill="#ffffff"/>
+                        <path d="M48 50 Q50 52 52 50" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </div>
+                <!-- Slot 4 -->
+                <div class="sticker-slot" id="slot-4">
+                    <i class="fa-solid fa-lock"></i>
+                    <!-- Sticker 4 SVG (Kuromi Gothic Crown) -->
+                    <svg viewBox="0 0 100 100">
+                        <polygon points="50,15 65,45 95,50 70,70 80,95 50,80 20,95 30,70 5,50 35,45" fill="#9b5de5"/>
+                        <polygon points="50,25 60,48 85,50 65,66 72,86 50,73 28,86 35,66 15,50 40,48" fill="#f15bb5"/>
+                        <circle cx="50" cy="53" r="10" fill="#ffffff"/>
+                        <circle cx="47" cy="51" r="2.5" fill="#08060c"/>
+                        <circle cx="53" cy="51" r="2.5" fill="#08060c"/>
+                        <path d="M48 56 Q50 58 52 56" stroke="#08060c" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </div>
+                <!-- Slot 5 -->
+                <div class="sticker-slot" id="slot-5">
+                    <i class="fa-solid fa-lock"></i>
+                    <!-- Sticker 5 SVG (Secret Love Heart Lock) -->
+                    <svg viewBox="0 0 100 100">
+                        <path d="M20 40 C20 22 40 18 50 32 C60 18 80 22 80 40 C80 65 50 88 50 88 C50 88 20 65 20 40 Z" fill="#08060c" stroke="#f15bb5" stroke-width="4"/>
+                        <!-- Keyhole -->
+                        <circle cx="50" cy="44" r="5" fill="#f15bb5"/>
+                        <polygon points="47,44 53,44 55,60 45,60" fill="#f15bb5"/>
+                        <!-- Mini wings on sides -->
+                        <path d="M20 40 L5 30 L10 45 Z" fill="#f15bb5"/>
+                        <path d="M80 40 L95 30 L90 45 Z" fill="#f15bb5"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Script Logika Game Interaktif -->
     <script>
-        let currentStep = 0;
-        const totalSteps = 5;
+        // Array of questions
+        const quizQuestions = [
+            {
+                id: 1,
+                type: 'text',
+                question: '1. Rafa suka warna apa? 🤔',
+                correctAnswer: 'biru',
+                placeholder: 'Ketik warna kesukaan Rafa...',
+                wrongMessage: 'Aww salah, warna favorit Rafa bukan itu! 😜'
+            },
+            {
+                id: 2,
+                type: 'choice',
+                question: '2. Siapa nama kucing Rafa yang paling besar? 🐱',
+                correctAnswer: 'Kroos',
+                options: ['Incess', 'Kroos', 'Abu'],
+                wrongMessage: 'Yahh salah, itu bukan kucing Rafa yang paling gede! Coba lagi yaa 🥺'
+            },
+            {
+                id: 3,
+                type: 'text',
+                question: '3. Berapa tanggal lahir Rafa? 🎂',
+                correctAnswer: '5 april',
+                placeholder: 'Ketik tanggal & bulan lahir Rafa...',
+                wrongMessage: 'Aduh kok lupa tanggal ultah Rafa sih... 🥺'
+            },
+            {
+                id: 4,
+                type: 'text',
+                question: '4. Apa Hobby Rafa? 🎯',
+                correctAnswer: 'panahan',
+                placeholder: 'Ketik hobi favorit Rafa...',
+                wrongMessage: 'Duh tebakanmu meleset nih, bukan itu! 😜❌'
+            },
+            {
+                id: 5,
+                type: 'text',
+                question: '5. Rafa suka mobil apa? 🏎️',
+                correctAnswer: 'ferrari',
+                placeholder: 'Ketik merk mobil impian Rafa...',
+                wrongMessage: 'Bukan itu sayangg, coba ingat-ingat lagi! 🏎️❌'
+            }
+        ];
 
-        // Sound Engine (Web Audio API) untuk menghasilkan suara retro 8-bit tanpa file eksternal
+        let currentQuestionIndex = 0;
+        let isAnswerChecked = false;
+
+        // Custom Vector Generator designed to match the cute Kuromi plush rug in image_0acfac.jpg
+        function getKuromiAvatarSVG(expression) {
+            let faceContent = '';
+            let blushContent = `<ellipse cx="68" cy="136" rx="10" ry="5" fill="rgba(241, 91, 181, 0.45)" /><ellipse cx="132" cy="136" rx="10" ry="5" fill="rgba(241, 91, 181, 0.45)" />`;
+
+            if (expression === 'happy' || expression === 'default') {
+                faceContent = `
+                    <!-- Mischievous/Happy Eyes matching image_0acfac.jpg -->
+                    <!-- Left Eye -->
+                    <g transform="translate(68, 122) rotate(-8)">
+                        <ellipse cx="0" cy="0" rx="9" ry="14" fill="#08060c" />
+                        <!-- Outer Lashes -->
+                        <path d="M -7 -6 Q -13 -12 -11 -4" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                        <path d="M -8 1 Q -15 -2 -11 5" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                    </g>
+                    <!-- Right Eye -->
+                    <g transform="translate(132, 122) rotate(8)">
+                        <ellipse cx="0" cy="0" rx="9" ry="14" fill="#08060c" />
+                        <!-- Outer Lashes -->
+                        <path d="M 7 -6 Q 13 -12 11 -4" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                        <path d="M 8 1 Q 15 -2 11 5" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                    </g>
+                    <!-- Mischievous Smirk exact match to image_0acfac.jpg -->
+                    <path d="M 94 140 Q 102 144 108 138 Q 110 135 106 133" stroke="#08060c" stroke-width="3.5" stroke-linecap="round" fill="none" />
+                    <path d="M 103 140 Q 106 145 108 139 Z" fill="#08060c" />
+                `;
+            } else if (expression === 'wink') {
+                faceContent = `
+                    <!-- Wink Left / Open Right Eye -->
+                    <!-- Left Eye (Winking) -->
+                    <path d="M 58 126 Q 68 114 78 124" stroke="#08060c" stroke-width="4.5" stroke-linecap="round" fill="none" />
+                    <path d="M 55 122 Q 48 116 52 125" stroke="#08060c" stroke-width="2.5" fill="none" />
+                    <!-- Right Eye (Open) -->
+                    <g transform="translate(132, 122) rotate(8)">
+                        <ellipse cx="0" cy="0" rx="9" ry="14" fill="#08060c" />
+                        <!-- Lashes -->
+                        <path d="M 7 -6 Q 13 -12 11 -4" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                        <path d="M 8 1 Q 15 -2 11 5" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                    </g>
+                    <!-- Cute open tongue smile -->
+                    <path d="M 92 138 Q 100 148 108 138" stroke="#08060c" stroke-width="3" stroke-linecap="round" fill="none" />
+                    <path d="M 94 139 Q 100 147 106 139 Z" fill="#fca5a5" />
+                `;
+            } else if (expression === 'love') {
+                faceContent = `
+                    <!-- Heart Eyes -->
+                    <path d="M 54 122 C 54 112, 68 112, 68 122 C 68 132, 54 142, 54 142 C 54 142, 40 132, 40 122 C 40 112, 54 112, 54 122 Z" fill="#f15bb5" />
+                    <path d="M 146 122 C 146 112, 160 112, 160 122 C 160 132, 146 142, 146 142 C 146 142, 132 132, 132 122 C 132 112, 146 112, 146 122 Z" fill="#f15bb5" />
+                    <!-- Shy Cheeky smile -->
+                    <path d="M 94 140 Q 100 145 106 140" stroke="#08060c" stroke-width="3.5" stroke-linecap="round" fill="none" />
+                `;
+                blushContent = `<ellipse cx="54" cy="138" rx="14" ry="7" fill="rgba(241, 91, 181, 0.6)" /><ellipse cx="146" cy="138" rx="14" ry="7" fill="rgba(241, 91, 181, 0.6)" />`;
+            } else if (expression === 'sad') {
+                faceContent = `
+                    <!-- Drooping Sad Eyes -->
+                    <g transform="translate(68, 124) rotate(12)">
+                        <ellipse cx="0" cy="0" rx="9" ry="12" fill="#08060c" opacity="0.85" />
+                        <path d="M -7 -4 Q -12 -8 -10 -1" stroke="#08060c" stroke-width="2" stroke-linecap="round" fill="none" />
+                    </g>
+                    <g transform="translate(132, 124) rotate(-12)">
+                        <ellipse cx="0" cy="0" rx="9" ry="12" fill="#08060c" opacity="0.85" />
+                        <path d="M 7 -4 Q 12 -8 10 -1" stroke="#08060c" stroke-width="2" stroke-linecap="round" fill="none" />
+                    </g>
+                    <!-- Sad Mouth / Frown -->
+                    <path d="M 92 144 Q 100 138 108 144" stroke="#08060c" stroke-width="3" stroke-linecap="round" fill="none" />
+                    <!-- Teardrops -->
+                    <path d="M 64 134 Q 64 148 58 148 Q 52 148 58 134 Z" fill="#64b5f6" />
+                    <path d="M 136 134 Q 136 148 142 148 Q 148 148 142 134 Z" fill="#64b5f6" />
+                `;
+            }
+
+            return `
+            <svg viewBox="0 0 200 200" class="kuromi-svg">
+                <!-- Outer Shadow Base -->
+                <ellipse cx="100" cy="118" rx="76" ry="56" fill="rgba(8, 6, 12, 0.15)" />
+                
+                <!-- Main Dark Hood Base matching the silhouette of image_0acfac.jpg -->
+                <ellipse cx="100" cy="115" rx="72" ry="52" fill="#131117" />
+                
+                <!-- Left Pointy Ear with curved flared path -->
+                <path d="M 46 90 C 22 75 14 55 24 40 C 34 30 52 50 64 78 Z" fill="#131117" />
+                <!-- Left Ear Pom-Pom Ball -->
+                <circle cx="22" cy="40" r="8" fill="#131117" />
+                <!-- Left Ear Inner Accent Line -->
+                <path d="M 32 46 C 40 52 48 64 54 75" stroke="#5a5563" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7" />
+
+                <!-- Right Pointy Ear with curved flared path -->
+                <path d="M 154 90 C 178 75 186 55 176 40 C 166 30 148 50 136 78 Z" fill="#131117" />
+                <!-- Right Ear Pom-Pom Ball -->
+                <circle cx="178" cy="40" r="8" fill="#131117" />
+                <!-- Right Ear Inner Accent Line -->
+                <path d="M 168 46 C 160 52 152 64 146 75" stroke="#5a5563" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7" />
+
+                <!-- White Jester Mask Area shaped exactly like image_0acfac.jpg -->
+                <path d="M 40 120 
+                         C 42 104, 66 94, 100 114 
+                         C 134 94, 158 104, 160 120 
+                         C 162 146, 134 162, 100 162 
+                         C 66 162, 38 146, 40 120 Z" 
+                      fill="#ffffff" 
+                      stroke="#131117" 
+                      stroke-width="1.5" />
+
+                <!-- Skull Crown Emblem (Pink, Rounded, Centered on Forehead) -->
+                <g id="skull-emblem">
+                    <!-- Skull Head -->
+                    <circle cx="100" cy="85" r="16" fill="#fca5a5" />
+                    <!-- Skull Teeth/Jaw -->
+                    <rect x="92" y="96" width="16" height="10" rx="3.5" fill="#fca5a5" />
+                    <!-- Skull Eyes -->
+                    <circle cx="94" cy="86" r="2.8" fill="#131117" />
+                    <circle cx="106" cy="86" r="2.8" fill="#131117" />
+                    <!-- Skull Tooth slots -->
+                    <line x1="97" y1="99" x2="97" y2="104" stroke="#131117" stroke-width="1.6" stroke-linecap="round" />
+                    <line x1="100" y1="99" x2="100" y2="104" stroke="#131117" stroke-width="1.6" stroke-linecap="round" />
+                    <line x1="103" y1="99" x2="103" y2="104" stroke="#131117" stroke-width="1.6" stroke-linecap="round" />
+                </g>
+
+                <!-- Small Soft Pink Nose -->
+                <ellipse cx="100" cy="132" rx="4.5" ry="3.2" fill="#f15bb5" />
+
+                <!-- Dynamic Expressions inside Mask -->
+                ${faceContent}
+                ${blushContent}
+            </svg>
+            `;
+        }
+
+        // Apply Avatar SVG initially
+        function updateKuromiState(expr) {
+            document.getElementById('kuromi-avatar-frame').innerHTML = getKuromiAvatarSVG(expr);
+        }
+
+        // Robust Web Audio API Synthesizer (Zero External Dependencies)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        let bgmInterval = null;
+        let isMusicPlaying = false;
+        let currentNoteIndex = 0;
+
+        // Sweet, cheerful, bouncy custom Sanrio chiptune melody
+        const sanrioBgmNotes = [
+            329.63, 392.00, 440.00, 392.00, 329.63, 261.63, 293.66, 329.63, // E5, G5, A5, G5, E5, C5, D5, E5
+            293.66, 261.63, 293.66, 329.63, 392.00, 440.00, 392.00, 329.63, // D5, C5, D5, E5, G5, A5, G5, E5
+            440.00, 523.25, 440.00, 392.00, 329.63, 293.66, 261.63, 293.66, // A5, C6, A5, G5, E5, D5, C5, D5
+            329.63, 392.00, 293.66, 329.63, 261.63, 0,      261.63, 0       // E5, G5, D5, E5, C5, [Rest], C5, [Rest]
+        ];
+
+        function playBGMNote() {
+            if (!isMusicPlaying) return;
+            
+            const freq = sanrioBgmNotes[currentNoteIndex];
+            currentNoteIndex = (currentNoteIndex + 1) % sanrioBgmNotes.length;
+
+            if (freq === 0) return; // Silent rest beat
+
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                // Cute music-box soft chiptune sound
+                osc.type = 'sine'; 
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                
+                // Whimsical decay envelope
+                gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } catch (e) {
+                console.warn("BGM warning:", e);
+            }
+        }
+
+        function toggleMusic() {
+            const btn = document.getElementById('music-toggle-btn');
+            
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            if (isMusicPlaying) {
+                isMusicPlaying = false;
+                clearInterval(bgmInterval);
+                btn.classList.remove('playing');
+                btn.innerHTML = '<i class="fa-solid fa-music"></i>';
+                btn.title = "Play Sanrio Theme";
+            } else {
+                isMusicPlaying = true;
+                currentNoteIndex = 0;
+                // Play music beats every 230ms (tempo)
+                bgmInterval = setInterval(playBGMNote, 230);
+                btn.classList.add('playing');
+                btn.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
+                btn.title = "Pause Music";
+            }
+        }
 
         function playSound(type) {
-            // Memastikan audio context aktif kembali setelah interaksi pengguna
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
@@ -479,282 +937,305 @@
             gain.connect(audioCtx.destination);
 
             if (type === 'correct') {
-                // Suara nada naik manis (Benar)
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
-                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
+                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); 
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.35);
+                osc.stop(audioCtx.currentTime + 0.4);
             } else if (type === 'wrong') {
-                // Suara buzz mendengung rendah (Salah)
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.32);
-            } else if (type === 'cheer') {
-                // Suara perayaan kecil di akhir
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.1);
-                osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime + 0.2);
+                osc.frequency.setValueAtTime(160, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(90, audioCtx.currentTime + 0.25);
                 gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
                 osc.start();
-                osc.stop(audioCtx.currentTime + 0.5);
+                osc.stop(audioCtx.currentTime + 0.28);
+            } else if (type === 'victory') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
+                osc.frequency.setValueAtTime(698.46, audioCtx.currentTime + 0.12); 
+                osc.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.24); 
+                osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime + 0.36); 
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.6);
             }
         }
 
-        // Memulai Kuis
         function startQuiz() {
             document.getElementById('screen-start').classList.remove('active');
-            document.getElementById('q1').classList.add('active');
             document.getElementById('progress-container').style.display = 'block';
-            updateProgress(1);
-        }
-
-        // Memperbarui Status Progress Bar
-        function updateProgress(step) {
-            currentStep = step;
-            const percent = (step / totalSteps) * 100;
-            document.getElementById('progress-bar').style.width = percent + '%';
-        }
-
-        // Navigasi ke Pertanyaan Selanjutnya
-        function goToNext(currentId) {
-            document.getElementById(`q${currentId}`).classList.remove('active');
-            const nextStepId = currentId + 1;
+            document.getElementById('album-container').style.display = 'block';
+            document.getElementById('screen-question').classList.add('active');
             
-            if (nextStepId <= totalSteps) {
-                document.getElementById(`q${nextStepId}`).classList.add('active');
-                updateProgress(nextStepId);
-                // Ubah gambar Kuromi biar ganti gaya secara dinamis
-                if (nextStepId === 3) {
-                    document.getElementById('kuromi-state-img').src = 'http://googleusercontent.com/image_collection/image_retrieval/17856758310550894523_1';
-                } else if (nextStepId === 5) {
-                    document.getElementById('kuromi-state-img').src = 'http://googleusercontent.com/image_collection/image_retrieval/17856758310550894523_2';
-                }
-            } else {
-                // Beres Kuis masuk ke layar ungkapan sayang
-                document.getElementById('progress-container').style.display = 'none';
-                document.getElementById('screen-love').classList.add('active');
-                document.getElementById('quiz-main-title').innerText = "Spesial untuk Denaya";
-                document.getElementById('quiz-sub-title').innerText = "Please answer honestly... 🥺";
+            // Automatically launch Sanrio melody when clicking Start!
+            if (!isMusicPlaying) {
+                toggleMusic();
             }
+            renderQuestion();
         }
 
-        // VALIDASI JAWABAN TEKS (Untuk Q1, Q4, Q5)
-        function validateTextAnswer(questionNum, correctAnswer, wrongMessage) {
-            const inputEl = document.getElementById(`input-q${questionNum}`);
-            const iconEl = document.getElementById(`icon-q${questionNum}`);
-            const feedbackEl = document.getElementById(`feed-q${questionNum}`);
-            const btnEl = document.getElementById(`btn-q${questionNum}`);
+        function updateProgress() {
+            const pct = (currentQuestionIndex / quizQuestions.length) * 100;
+            document.getElementById('progress-bar').style.width = pct + '%';
+        }
+
+        function renderQuestion() {
+            updateProgress();
+            isAnswerChecked = false;
             
-            const userAnswer = inputEl.value.trim().toLowerCase();
+            const qData = quizQuestions[currentQuestionIndex];
+            document.getElementById('q-text').innerText = qData.question;
+            
+            // Clear feedback nodes
+            const feedbackTxt = document.getElementById('feedback-txt');
+            feedbackTxt.style.display = 'none';
+            feedbackTxt.innerText = '';
+            
+            // Dynamic expression change on new question
+            updateKuromiState('happy');
 
-            if (userAnswer === correctAnswer) {
-                // JAWABAN BENAR
-                playSound('correct');
-                inputEl.classList.remove('error');
-                inputEl.classList.add('success');
-                inputEl.disabled = true;
+            const inputContainer = document.getElementById('input-container');
+            const optionsContainer = document.getElementById('options-container');
+            const actionBtn = document.getElementById('next-submit-btn');
 
-                iconEl.className = "feedback-icon fa-solid fa-circle-check";
-                iconEl.style.color = "var(--success-green)";
-                iconEl.style.display = "block";
+            actionBtn.innerText = 'Kirim Jawaban 🖤';
+            actionBtn.style.display = 'block';
 
-                feedbackEl.innerText = "Jawaban Benar! Kamu emang paling pinter! 💜✨";
-                feedbackEl.style.color = "var(--success-green)";
-                feedbackEl.style.display = "block";
-
-                // Ganti tombol kirim menjadi tombol Lanjut
-                btnEl.innerText = "Lanjut 💜";
-                btnEl.onclick = function() {
-                    goToNext(questionNum);
-                };
-            } else {
-                // JAWABAN SALAH
-                playSound('wrong');
-                inputEl.classList.add('error');
+            if (qData.type === 'text') {
+                inputContainer.style.display = 'block';
+                optionsContainer.style.display = 'none';
                 
-                iconEl.className = "feedback-icon fa-solid fa-circle-xmark";
-                iconEl.style.color = "var(--error-red)";
-                iconEl.style.display = "block";
+                const answerField = document.getElementById('answer-field');
+                answerField.value = '';
+                answerField.disabled = false;
+                answerField.placeholder = qData.placeholder || 'Ketik di sini...';
+                answerField.className = 'ans-input';
+                
+                document.getElementById('validation-icon').style.display = 'none';
+            } else if (qData.type === 'choice') {
+                inputContainer.style.display = 'none';
+                optionsContainer.style.display = 'flex';
+                optionsContainer.innerHTML = '';
+                actionBtn.style.display = 'none'; 
 
-                feedbackEl.innerText = wrongMessage;
-                feedbackEl.style.color = "var(--error-red)";
-                feedbackEl.style.display = "block";
-
-                // Menghapus efek getar merah setelah animasi selesai agar bisa di-trigger ulang jika dicoba lagi
-                setTimeout(() => {
-                    inputEl.classList.remove('error');
-                }, 400);
+                qData.options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerHTML = `<span>${opt}</span><i class="fa-solid"></i>`;
+                    btn.onclick = () => handleChoiceSelection(opt, btn);
+                    optionsContainer.appendChild(btn);
+                });
             }
         }
 
-        // JAWABAN KHUSUS PERTANYAAN KUCING (Q2)
-        function selectOption(choiceName, isCorrect, clickedBtn) {
-            const feedbackEl = document.getElementById('feed-q2');
-            const allOptionBtns = document.querySelectorAll('#q2 .option-btn');
+        // Handle typing responses
+        function handleSubmit() {
+            const qData = quizQuestions[currentQuestionIndex];
+            
+            if (isAnswerChecked) {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizQuestions.length) {
+                    renderQuestion();
+                } else {
+                    showLoveScreen();
+                }
+                return;
+            }
 
-            // Reset status semua tombol pilihan ganda
-            allOptionBtns.forEach(btn => {
-                btn.className = "option-btn";
-                btn.disabled = true; // Nonaktifkan agar tidak bisa spam klik
-                const icon = btn.querySelector('.fa-solid');
-                if (icon) icon.className = "fa-solid";
-            });
+            const field = document.getElementById('answer-field');
+            const rawAns = field.value.trim().toLowerCase();
+            const correctAns = qData.correctAnswer.toLowerCase();
+            
+            const isCorrect = (rawAns === correctAns);
+
+            const icon = document.getElementById('validation-icon');
+            const feedback = document.getElementById('feedback-txt');
+            const submitBtn = document.getElementById('next-submit-btn');
 
             if (isCorrect) {
-                // BENAR
                 playSound('correct');
+                updateKuromiState('wink');
+                field.classList.remove('error');
+                field.classList.add('success');
+                field.disabled = true;
+
+                icon.className = "feedback-icon fa-solid fa-circle-check";
+                icon.style.color = "var(--success-green)";
+                icon.style.display = "block";
+
+                feedback.innerText = "Jawaban Benar! Kamu emang paling pinter! 💜✨";
+                feedback.style.color = "var(--success-green)";
+                feedback.style.display = "block";
+
+                unlockSticker(qData.id);
+
+                submitBtn.innerText = 'Pertanyaan Berikutnya ✨';
+                isAnswerChecked = true;
+            } else {
+                playSound('wrong');
+                updateKuromiState('sad');
+                field.classList.add('error');
+                
+                icon.className = "feedback-icon fa-solid fa-circle-xmark";
+                icon.style.color = "var(--error-red)";
+                icon.style.display = "block";
+
+                feedback.innerText = qData.wrongMessage;
+                feedback.style.color = "var(--error-red)";
+                feedback.style.display = "block";
+
+                setTimeout(() => {
+                    field.classList.remove('error');
+                }, 420);
+            }
+        }
+
+        // Handle multiple-choice responses
+        function handleChoiceSelection(selectedVal, clickedBtn) {
+            const qData = quizQuestions[currentQuestionIndex];
+            const feedback = document.getElementById('feedback-txt');
+            const allBtns = document.querySelectorAll('#options-container .option-btn');
+
+            allBtns.forEach(btn => btn.disabled = true); // lock clicks
+
+            const isCorrect = (selectedVal === qData.correctAnswer);
+
+            if (isCorrect) {
+                playSound('correct');
+                updateKuromiState('wink');
                 clickedBtn.classList.add('correct');
                 const checkIcon = clickedBtn.querySelector('.fa-solid');
-                checkIcon.classList.add('fa-circle-check');
+                if (checkIcon) {
+                    checkIcon.className = "fa-solid fa-circle-check";
+                }
 
-                feedbackEl.innerText = "Yess! Kroos adalah si gembrot kesayangan Rafa! 🐱💖";
-                feedbackEl.style.color = "var(--success-green)";
-                feedbackEl.style.display = "block";
+                feedback.innerText = "Yess! Kroos adalah si gembrot kesayangan Rafa! 🐱💖";
+                feedback.style.color = "var(--success-green)";
+                feedback.style.display = "block";
 
-                document.getElementById('btn-next-q2').style.display = "block";
+                unlockSticker(qData.id);
+
+                setTimeout(() => {
+                    const actionBtn = document.getElementById('next-submit-btn');
+                    actionBtn.innerText = 'Pertanyaan Berikutnya ✨';
+                    actionBtn.style.display = 'block';
+                    isAnswerChecked = true;
+                }, 500);
+
             } else {
-                // SALAH
                 playSound('wrong');
+                updateKuromiState('sad');
                 clickedBtn.classList.add('wrong');
                 const crossIcon = clickedBtn.querySelector('.fa-solid');
-                crossIcon.classList.add('fa-circle-xmark');
+                if (crossIcon) {
+                    crossIcon.className = "fa-solid fa-circle-xmark";
+                }
 
-                feedbackEl.innerText = "Yahh salah, itu bukan kucing Rafa yang paling gede! Coba lagi yaa 🥺";
-                feedbackEl.style.color = "var(--error-red)";
-                feedbackEl.style.display = "block";
+                feedback.innerText = qData.wrongMessage;
+                feedback.style.color = "var(--error-red)";
+                feedback.style.display = "block";
 
-                // Izinkan memilih ulang setelah 1 detik
                 setTimeout(() => {
-                    allOptionBtns.forEach(btn => {
+                    allBtns.forEach(btn => {
                         btn.disabled = false;
                         btn.className = "option-btn";
                         const icon = btn.querySelector('.fa-solid');
                         if (icon) icon.className = "fa-solid";
                     });
-                }, 1000);
+                }, 1100);
             }
         }
 
-        // JAWABAN KHUSUS TANGGAL LAHIR (Q3)
-        function validateDateAnswer() {
-            const inputEl = document.getElementById('input-q3');
-            const iconEl = document.getElementById('icon-q3');
-            const feedbackEl = document.getElementById('feed-q3');
-            const btnEl = document.getElementById('btn-q3');
-            
-            const rawAnswer = inputEl.value.trim().toLowerCase();
-            
-            // Validasi fleksibel (menerima "5 april", "05 april", "05-april", atau "5-april")
-            const isCorrect = (
-                rawAnswer === "5 april" || 
-                rawAnswer === "05 april" || 
-                rawAnswer === "5-april" || 
-                rawAnswer === "05-april"
-            );
-
-            if (isCorrect) {
-                playSound('correct');
-                inputEl.classList.remove('error');
-                inputEl.classList.add('success');
-                inputEl.disabled = true;
-
-                iconEl.className = "feedback-icon fa-solid fa-circle-check";
-                iconEl.style.color = "var(--success-green)";
-                iconEl.style.display = "block";
-
-                feedbackEl.innerText = "Yeyy bener! Kamu selalu inget tanggal lahir Rafa 🎂🖤";
-                feedbackEl.style.color = "var(--success-green)";
-                feedbackEl.style.display = "block";
-
-                btnEl.innerText = "Lanjut 💜";
-                btnEl.onclick = function() {
-                    goToNext(3);
-                };
-            } else {
-                playSound('wrong');
-                inputEl.classList.add('error');
-                
-                iconEl.className = "feedback-icon fa-solid fa-circle-xmark";
-                iconEl.style.color = "var(--error-red)";
-                iconEl.style.display = "block";
-
-                feedbackEl.innerText = "Aduh kok lupa tanggal ultah Rafa sih... 🥺";
-                feedbackEl.style.color = "var(--error-red)";
-                feedbackEl.style.display = "block";
-
-                setTimeout(() => {
-                    inputEl.classList.remove('error');
-                }, 400);
+        function unlockSticker(id) {
+            const slot = document.getElementById(`slot-${id}`);
+            if (slot && !slot.classList.contains('unlocked')) {
+                slot.classList.add('unlocked');
             }
         }
 
-        // LOGIKA TOMBOL MENGHINDAR (DODGE BUTTON)
-        function dodgeButton() {
+        function showLoveScreen() {
+            updateProgress();
+            document.getElementById('progress-container').style.display = 'none';
+            document.getElementById('screen-question').classList.remove('active');
+            document.getElementById('screen-love').classList.add('active');
+            
+            document.getElementById('quiz-main-title').innerText = "Spesial untuk Denaya";
+            document.getElementById('quiz-sub-title').innerText = "Please answer honestly... 🥺";
+            updateKuromiState('happy');
+        }
+
+        function dodgeButton(event) {
+            if (event) {
+                event.preventDefault(); 
+            }
             playSound('wrong');
+            updateKuromiState('sad');
             const btnNo = document.getElementById('btn-no');
-            
-            // Menentukan area pergeseran yang aman agar tidak keluar kotak container
             const container = document.querySelector('.quiz-container');
+            
             const maxX = container.clientWidth - btnNo.clientWidth - 40;
-            const maxY = 120 - btnNo.clientHeight - 20;
+            const maxY = 130 - btnNo.clientHeight - 20;
 
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY) + 10;
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
 
             btnNo.style.left = randomX + 'px';
             btnNo.style.top = randomY + 'px';
         }
 
-        // TAHAP AKHIR KETIKA DENAYA MENEKAN SAYANG BANGET
         function finishQuiz() {
-            playSound('cheer');
+            playSound('victory');
             document.getElementById('screen-love').classList.remove('active');
             document.getElementById('screen-success').classList.add('active');
             
-            // Ubah header ke ucapan terakhir
             document.getElementById('quiz-main-title').innerText = "I Love You, Denaya! ❤️";
-            document.getElementById('quiz-sub-title').innerText = "Selamat, kamu pacar terbaik di dunia!";
+            document.getElementById('quiz-sub-title').innerText = "Kamu pacar terbaik di dunia!";
+            updateKuromiState('love');
+
+            // Fully unlock sticker book
+            for (let i = 1; i <= 5; i++) {
+                unlockSticker(i);
+            }
             
-            // Trigger efek hujan hati kelap-kelip yang meriah
-            startHeartsCelebration();
+            triggerHeartExplosions();
         }
 
-        // Efek Visual Taburan Hati Tambahan Saat Selesai
-        function startHeartsCelebration() {
-            for (let i = 0; i < 25; i++) {
+        function triggerHeartExplosions() {
+            for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
-                    heart.innerText = '💖';
+                    const elements = ['💖', '🖤', '💜', '🌸', '💀'];
+                    heart.innerText = elements[Math.floor(Math.random() * elements.length)];
                     heart.style.position = 'fixed';
-                    heart.style.fontSize = Math.floor(Math.random() * 20 + 15) + 'px';
+                    heart.style.fontSize = Math.floor(Math.random() * 24 + 16) + 'px';
                     heart.style.left = Math.random() * window.innerWidth + 'px';
                     heart.style.top = window.innerHeight + 'px';
                     heart.style.zIndex = '999';
-                    heart.style.transition = 'all 3s ease-out';
+                    heart.style.transition = 'all 2.8s cubic-bezier(0.1, 0.8, 0.3, 1)';
                     heart.style.pointerEvents = 'none';
                     
                     document.body.appendChild(heart);
                     
                     setTimeout(() => {
-                        heart.style.transform = `translateY(-${window.innerHeight + 100}px) translateX(${Math.random() * 100 - 50}px)`;
+                        heart.style.transform = `translateY(-${window.innerHeight + 100}px) translateX(${Math.random() * 120 - 60}px) rotate(${Math.random() * 360}deg)`;
                         heart.style.opacity = '0';
                     }, 50);
 
                     setTimeout(() => {
                         heart.remove();
-                    }, 3050);
-                }, i * 150);
+                    }, 2850);
+                }, i * 120);
             }
+        }
+
+        // Initialize Avatar rendering on window load
+        window.onload = function() {
+            updateKuromiState('happy');
         }
     </script>
 </body>
