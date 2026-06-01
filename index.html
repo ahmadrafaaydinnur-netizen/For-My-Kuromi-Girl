@@ -69,7 +69,6 @@
             100% { transform: translateY(-40px) rotate(20deg) scale(1.1); }
         }
 
-        /* Sanrio Floating Music Button Control */
         .music-control-widget {
             position: absolute;
             top: 20px;
@@ -123,16 +122,6 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .quiz-container::after {
-            content: '';
-            position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(135deg, var(--primary-purple), var(--kuromi-pink));
-            z-index: -1;
-            border-radius: 32px;
-            opacity: 0.3;
-        }
-
         .kuromi-header {
             margin-bottom: 20px;
             position: relative;
@@ -177,10 +166,6 @@
             height: 2px;
             width: 50px;
             background: linear-gradient(90deg, transparent, var(--kuromi-pink));
-        }
-
-        .skull-divider::after {
-            background: linear-gradient(-90deg, transparent, var(--kuromi-pink));
         }
 
         h1 {
@@ -343,10 +328,6 @@
             box-shadow: 0 8px 22px rgba(241, 91, 181, 0.55);
         }
 
-        .action-btn:active {
-            transform: translateY(0);
-        }
-
         .progress-container {
             width: 100%;
             height: 10px;
@@ -392,7 +373,6 @@
             z-index: 10;
         }
 
-        /* Sticker Album Styles */
         .sticker-album {
             margin-top: 25px;
             padding-top: 15px;
@@ -463,6 +443,26 @@
             display: none;
         }
 
+        .preview-audio-indicator {
+            background-color: #2b1d42;
+            border: 1px solid var(--primary-purple);
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #d8b4fe;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+        }
+
+        .preview-audio-indicator i {
+            font-size: 16px;
+            color: var(--kuromi-pink);
+        }
+
         .heart-pulse {
             font-size: 65px;
             color: var(--kuromi-pink);
@@ -477,7 +477,6 @@
             100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--kuromi-pink)); }
         }
 
-        /* Responsive Design Rules */
         @media (max-width: 480px) {
             .quiz-container {
                 padding: 25px 18px;
@@ -488,16 +487,10 @@
             .question-text {
                 font-size: 16px;
             }
-            .sticker-slot i {
-                font-size: 11px;
-            }
         }
     </style>
 </head>
 <body>
-
-    <!-- Hidden Background YouTube Player Div -->
-    <div id="youtube-player" style="position: absolute; width: 1px; height: 1px; opacity: 0.01; left: -100px; top: -100px; pointer-events: none;"></div>
 
     <div class="decorations">
         <span class="floating-emoji" style="top: 8%; left: 8%; animation-delay: 0s;">💀</span>
@@ -530,6 +523,13 @@
             
             <!-- SCREEN START -->
             <div class="screen-card active" id="screen-start">
+                <div class="preview-audio-indicator">
+                    <i class="fa-solid fa-compact-disc"></i>
+                    <div>
+                        <strong>Mode Audio Bebas Iklan!</strong><br>
+                        Guna memutar lagu asli Sal Priadi secara 100% jernih tanpa iklan aneh, silakan upload file musik lagu aslinya dengan nama <code>music.mp3</code> ke folder GitHub kamu. Jika belum diupload, website otomatis memutar aransemen kotak musik manis di bawah!
+                    </div>
+                </div>
                 <p class="question-text" style="font-size: 16px; font-family: 'Quicksand', sans-serif; line-height: 1.5;">
                     Hai Denaya! Rafa punya kuis lucu bertema Kuromi buat kamu. Jawab semua pertanyaan tentang Rafa dengan benar buat dapetin kejutan spesial ya! Ready? 💀😈
                 </p>
@@ -596,14 +596,11 @@
                         <path d="M50 15 C30 15 20 28 20 50 C20 68 35 80 50 80 C65 80 80 68 80 50 C80 28 70 15 50 15 Z" fill="#25163c"/>
                         <circle cx="28" cy="25" r="10" fill="#f15bb5"/>
                         <circle cx="72" cy="25" r="10" fill="#f15bb5"/>
-                        <!-- White face inside hat -->
                         <path d="M50 35 C38 35 32 45 32 55 C32 68 40 74 50 74 C60 74 68 68 68 55 C68 45 62 35 50 35 Z" fill="#ffffff"/>
-                        <!-- Pink skull crown emblem -->
                         <circle cx="50" cy="27" r="7" fill="#f15bb5"/>
                         <path d="M47 31 H53 L51 35 H49 Z" fill="#f15bb5"/>
                         <circle cx="48" cy="26" r="1.5" fill="#ffffff"/>
                         <circle cx="52" cy="26" r="1.5" fill="#ffffff"/>
-                        <!-- Cute face -->
                         <ellipse cx="44" cy="53" rx="2.5" ry="3.5" fill="#08060c"/>
                         <ellipse cx="56" cy="53" rx="2.5" ry="3.5" fill="#08060c"/>
                         <path d="M48 60 Q50 63 52 60" stroke="#08060c" stroke-width="2" stroke-linecap="round" fill="none"/>
@@ -616,15 +613,11 @@
                     <i class="fa-solid fa-lock"></i>
                     <!-- Sticker 2 SVG (Pink Devil Heart) -->
                     <svg viewBox="0 0 100 100">
-                        <!-- Background Heart -->
                         <path d="M12 35 C12 18, 30 15, 50 32 C70 15, 88 18, 88 35 C88 58, 50 82, 50 82 C50 82, 12 58, 12 35 Z" fill="#f15bb5"/>
-                        <!-- Gothic Devil Horns on Heart -->
                         <path d="M22 25 Q10 10 18 35 Z" fill="#08060c"/>
                         <path d="M78 25 Q90 10 82 35 Z" fill="#08060c"/>
-                        <!-- Inner White Skull Emblem -->
                         <circle cx="50" cy="45" r="12" fill="#ffffff"/>
                         <rect x="44" y="52" width="12" height="8" rx="3" fill="#ffffff"/>
-                        <!-- Skull Eyes -->
                         <circle cx="46" cy="44" r="2.5" fill="#f15bb5"/>
                         <circle cx="54" cy="44" r="2.5" fill="#f15bb5"/>
                         <path d="M49 50 H51 V54 H49 Z" fill="#f15bb5"/>
@@ -635,10 +628,8 @@
                     <i class="fa-solid fa-lock"></i>
                     <!-- Sticker 3 SVG (Kuromi Sweet Bat) -->
                     <svg viewBox="0 0 100 100">
-                        <!-- Bat Wings -->
                         <path d="M50 50 L10 32 Q25 45 28 55 Q18 62 10 58 L50 64 Z" fill="#25163c"/>
                         <path d="M50 50 L90 32 Q75 45 72 55 Q82 62 90 58 L50 64 Z" fill="#25163c"/>
-                        <!-- Cute Center Purple Heart body -->
                         <path d="M30 45 C30 35, 42 32, 50 42 C58 32, 70 35, 70 45 C70 58, 50 72, 50 72 C50 72, 30 58, 30 45 Z" fill="#9b5de5"/>
                         <circle cx="45" cy="45" r="2" fill="#ffffff"/>
                         <circle cx="55" cy="45" r="2" fill="#ffffff"/>
@@ -664,10 +655,8 @@
                     <!-- Sticker 5 SVG (Secret Love Heart Lock) -->
                     <svg viewBox="0 0 100 100">
                         <path d="M20 40 C20 22 40 18 50 32 C60 18 80 22 80 40 C80 65 50 88 50 88 C50 88 20 65 20 40 Z" fill="#08060c" stroke="#f15bb5" stroke-width="4"/>
-                        <!-- Keyhole -->
                         <circle cx="50" cy="44" r="5" fill="#f15bb5"/>
                         <polygon points="47,44 53,44 55,60 45,60" fill="#f15bb5"/>
-                        <!-- Mini wings on sides -->
                         <path d="M20 40 L5 30 L10 45 Z" fill="#f15bb5"/>
                         <path d="M80 40 L95 30 L90 45 Z" fill="#f15bb5"/>
                     </svg>
@@ -725,61 +714,47 @@
         let currentQuestionIndex = 0;
         let isAnswerChecked = false;
 
-        // Custom Vector Generator designed to match the cute Kuromi plush rug in image_0acfac.jpg
+        // Vector SVG Generator exactly matching image_0acfac.jpg plush rug
         function getKuromiAvatarSVG(expression) {
             let faceContent = '';
             let blushContent = `<ellipse cx="68" cy="136" rx="10" ry="5" fill="rgba(241, 91, 181, 0.45)" /><ellipse cx="132" cy="136" rx="10" ry="5" fill="rgba(241, 91, 181, 0.45)" />`;
 
             if (expression === 'happy' || expression === 'default') {
                 faceContent = `
-                    <!-- Mischievous/Happy Eyes matching image_0acfac.jpg -->
-                    <!-- Left Eye -->
                     <g transform="translate(68, 122) rotate(-8)">
                         <ellipse cx="0" cy="0" rx="9" ry="14" fill="#08060c" />
-                        <!-- Outer Lashes -->
                         <path d="M -7 -6 Q -13 -12 -11 -4" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
                         <path d="M -8 1 Q -15 -2 -11 5" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
                     </g>
-                    <!-- Right Eye -->
                     <g transform="translate(132, 122) rotate(8)">
                         <ellipse cx="0" cy="0" rx="9" ry="14" fill="#08060c" />
-                        <!-- Outer Lashes -->
                         <path d="M 7 -6 Q 13 -12 11 -4" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
                         <path d="M 8 1 Q 15 -2 11 5" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
                     </g>
-                    <!-- Mischievous Smirk exact match to image_0acfac.jpg -->
                     <path d="M 94 140 Q 102 144 108 138 Q 110 135 106 133" stroke="#08060c" stroke-width="3.5" stroke-linecap="round" fill="none" />
                     <path d="M 103 140 Q 106 145 108 139 Z" fill="#08060c" />
                 `;
             } else if (expression === 'wink') {
                 faceContent = `
-                    <!-- Wink Left / Open Right Eye -->
-                    <!-- Left Eye (Winking) -->
                     <path d="M 58 126 Q 68 114 78 124" stroke="#08060c" stroke-width="4.5" stroke-linecap="round" fill="none" />
                     <path d="M 55 122 Q 48 116 52 125" stroke="#08060c" stroke-width="2.5" fill="none" />
-                    <!-- Right Eye (Open) -->
                     <g transform="translate(132, 122) rotate(8)">
                         <ellipse cx="0" cy="0" rx="9" ry="14" fill="#08060c" />
-                        <!-- Lashes -->
                         <path d="M 7 -6 Q 13 -12 11 -4" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
                         <path d="M 8 1 Q 15 -2 11 5" stroke="#08060c" stroke-width="2.5" stroke-linecap="round" fill="none" />
                     </g>
-                    <!-- Cute open tongue smile -->
                     <path d="M 92 138 Q 100 148 108 138" stroke="#08060c" stroke-width="3" stroke-linecap="round" fill="none" />
                     <path d="M 94 139 Q 100 147 106 139 Z" fill="#fca5a5" />
                 `;
             } else if (expression === 'love') {
                 faceContent = `
-                    <!-- Heart Eyes -->
                     <path d="M 54 122 C 54 112, 68 112, 68 122 C 68 132, 54 142, 54 142 C 54 142, 40 132, 40 122 C 40 112, 54 112, 54 122 Z" fill="#f15bb5" />
                     <path d="M 146 122 C 146 112, 160 112, 160 122 C 160 132, 146 142, 146 142 C 146 142, 132 132, 132 122 C 132 112, 146 112, 146 122 Z" fill="#f15bb5" />
-                    <!-- Shy Cheeky smile -->
                     <path d="M 94 140 Q 100 145 106 140" stroke="#08060c" stroke-width="3.5" stroke-linecap="round" fill="none" />
                 `;
                 blushContent = `<ellipse cx="54" cy="138" rx="14" ry="7" fill="rgba(241, 91, 181, 0.6)" /><ellipse cx="146" cy="138" rx="14" ry="7" fill="rgba(241, 91, 181, 0.6)" />`;
             } else if (expression === 'sad') {
                 faceContent = `
-                    <!-- Drooping Sad Eyes -->
                     <g transform="translate(68, 124) rotate(12)">
                         <ellipse cx="0" cy="0" rx="9" ry="12" fill="#08060c" opacity="0.85" />
                         <path d="M -7 -4 Q -12 -8 -10 -1" stroke="#08060c" stroke-width="2" stroke-linecap="round" fill="none" />
@@ -788,9 +763,7 @@
                         <ellipse cx="0" cy="0" rx="9" ry="12" fill="#08060c" opacity="0.85" />
                         <path d="M 7 -4 Q 12 -8 10 -1" stroke="#08060c" stroke-width="2" stroke-linecap="round" fill="none" />
                     </g>
-                    <!-- Sad Mouth / Frown -->
                     <path d="M 92 144 Q 100 138 108 144" stroke="#08060c" stroke-width="3" stroke-linecap="round" fill="none" />
-                    <!-- Teardrops -->
                     <path d="M 64 134 Q 64 148 58 148 Q 52 148 58 134 Z" fill="#64b5f6" />
                     <path d="M 136 134 Q 136 148 142 148 Q 148 148 142 134 Z" fill="#64b5f6" />
                 `;
@@ -798,143 +771,55 @@
 
             return `
             <svg viewBox="0 0 200 200" class="kuromi-svg">
-                <!-- Outer Shadow Base -->
                 <ellipse cx="100" cy="118" rx="76" ry="56" fill="rgba(8, 6, 12, 0.15)" />
-                
-                <!-- Main Dark Hood Base matching the silhouette of image_0acfac.jpg -->
                 <ellipse cx="100" cy="115" rx="72" ry="52" fill="#131117" />
-                
-                <!-- Left Pointy Ear with curved flared path -->
                 <path d="M 46 90 C 22 75 14 55 24 40 C 34 30 52 50 64 78 Z" fill="#131117" />
-                <!-- Left Ear Pom-Pom Ball -->
                 <circle cx="22" cy="40" r="8" fill="#131117" />
-                <!-- Left Ear Inner Accent Line -->
                 <path d="M 32 46 C 40 52 48 64 54 75" stroke="#5a5563" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7" />
-
-                <!-- Right Pointy Ear with curved flared path -->
                 <path d="M 154 90 C 178 75 186 55 176 40 C 166 30 148 50 136 78 Z" fill="#131117" />
-                <!-- Right Ear Pom-Pom Ball -->
                 <circle cx="178" cy="40" r="8" fill="#131117" />
-                <!-- Right Ear Inner Accent Line -->
                 <path d="M 168 46 C 160 52 152 64 146 75" stroke="#5a5563" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7" />
-
-                <!-- White Jester Mask Area shaped exactly like image_0acfac.jpg -->
-                <path d="M 40 120 
-                         C 42 104, 66 94, 100 114 
-                         C 134 94, 158 104, 160 120 
-                         C 162 146, 134 162, 100 162 
-                         C 66 162, 38 146, 40 120 Z" 
-                      fill="#ffffff" 
-                      stroke="#131117" 
-                      stroke-width="1.5" />
-
-                <!-- Skull Crown Emblem (Pink, Rounded, Centered on Forehead) -->
+                <path d="M 40 120 C 42 104, 66 94, 100 114 C 134 94, 158 104, 160 120 C 162 146, 134 162, 100 162 C 66 162, 38 146, 40 120 Z" fill="#ffffff" stroke="#131117" stroke-width="1.5" />
                 <g id="skull-emblem">
-                    <!-- Skull Head -->
                     <circle cx="100" cy="85" r="16" fill="#fca5a5" />
-                    <!-- Skull Teeth/Jaw -->
                     <rect x="92" y="96" width="16" height="10" rx="3.5" fill="#fca5a5" />
-                    <!-- Skull Eyes -->
                     <circle cx="94" cy="86" r="2.8" fill="#131117" />
                     <circle cx="106" cy="86" r="2.8" fill="#131117" />
-                    <!-- Skull Tooth slots -->
                     <line x1="97" y1="99" x2="97" y2="104" stroke="#131117" stroke-width="1.6" stroke-linecap="round" />
                     <line x1="100" y1="99" x2="100" y2="104" stroke="#131117" stroke-width="1.6" stroke-linecap="round" />
                     <line x1="103" y1="99" x2="103" y2="104" stroke="#131117" stroke-width="1.6" stroke-linecap="round" />
                 </g>
-
-                <!-- Small Soft Pink Nose -->
                 <ellipse cx="100" cy="132" rx="4.5" ry="3.2" fill="#f15bb5" />
-
-                <!-- Dynamic Expressions inside Mask -->
                 ${faceContent}
                 ${blushContent}
             </svg>
             `;
         }
 
-        // Apply Avatar SVG initially
         function updateKuromiState(expr) {
             document.getElementById('kuromi-avatar-frame').innerHTML = getKuromiAvatarSVG(expr);
         }
 
-        let ytPlayer;
+        // Dual Engine Audio Setup
         let isMusicPlaying = false;
+        let isUsingFallbackSynth = false;
         let playTimer;
+        let synthInterval;
+        let synthNotesPlaying = [];
+        
+        // Load the local clean MP3 file (100% ad-free, 100% clean)
+        let mainAudio = new Audio('music.mp3');
+        mainAudio.loop = true;
 
-        // Load YouTube Iframe API asynchronously
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        // Monitor MP3 capability and fallback automatically
+        mainAudio.addEventListener('error', function() {
+            console.log("File music.mp3 tidak ditemukan atau gagal di-load. Otomatis beralih ke Synth Kotak Musik.");
+            isUsingFallbackSynth = true;
+        });
 
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('youtube-player', {
-                height: '1',
-                width: '1',
-                videoId: '4OL6d6NZ3I0', // Official YouTube ID of Sal Priadi - I’d like to watch you sleeping
-                playerVars: {
-                    'playsinline': 1,
-                    'controls': 0,
-                    'disablekb': 1,
-                    'fs': 0,
-                    'rel': 0,
-                    'showinfo': 0,
-                    'loop': 1,
-                    'playlist': '4OL6d6NZ3I0'
-                },
-                events: {
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerStateChange(event) {
-            const btn = document.getElementById('music-toggle-btn');
-            if (event.data === YT.PlayerState.PLAYING) {
-                isMusicPlaying = true;
-                btn.classList.add('playing');
-                btn.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
-
-                // Check duration and force limit exactly to 2 minutes (120 seconds)
-                clearInterval(playTimer);
-                playTimer = setInterval(() => {
-                    if (ytPlayer && ytPlayer.getCurrentTime() >= 120) {
-                        stopMusicGracefully();
-                    }
-                }, 1000);
-            } else {
-                isMusicPlaying = false;
-                btn.classList.remove('playing');
-                btn.innerHTML = '<i class="fa-solid fa-music"></i>';
-                clearInterval(playTimer);
-            }
-        }
-
-        function stopMusicGracefully() {
-            if (ytPlayer) {
-                ytPlayer.pauseVideo();
-                ytPlayer.seekTo(0);
-            }
-            isMusicPlaying = false;
-            const btn = document.getElementById('music-toggle-btn');
-            btn.classList.remove('playing');
-            btn.innerHTML = '<i class="fa-solid fa-music"></i>';
-            clearInterval(playTimer);
-        }
-
-        function toggleMusic() {
-            if (!ytPlayer) return;
-            if (isMusicPlaying) {
-                ytPlayer.pauseVideo();
-            } else {
-                ytPlayer.playVideo();
-            }
-        }
-
-        // Web Audio API Synth backup for sound effects (correct / incorrect beep sounds)
         const sfxCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+        // Safe SFX Beep Sounds for Correct/Wrong indicators
         function playSound(type) {
             if (sfxCtx.state === 'suspended') {
                 sfxCtx.resume();
@@ -974,16 +859,152 @@
             }
         }
 
+        // Sal Priadi "I'd like to watch you sleeping" music box sheet
+        const salPriadiMelody = [
+            { f: 329.63, d: 0.6 }, // E4 (I'd)
+            { f: 349.23, d: 0.6 }, // F4 (like)
+            { f: 392.00, d: 0.6 }, // G4 (to)
+            { f: 440.00, d: 1.2 }, // A4 (watch)
+            { f: 392.00, d: 1.2 }, // G4 (you)
+            { f: 349.23, d: 2.4 }, // F4 (sleeping)
+            
+            { f: 349.23, d: 0.6 }, // F4 (Leb)
+            { f: 392.00, d: 0.6 }, // G4 (ih)
+            { f: 440.00, d: 1.2 }, // A4 (ser)
+            { f: 392.00, d: 1.2 }, // G4 (ing)
+            { f: 349.23, d: 2.4 }, // F4 (menganga)
+
+            { f: 293.66, d: 0.6 }, // D4 (A)
+            { f: 329.63, d: 0.6 }, // E4 (ku)
+            { f: 349.23, d: 1.2 }, // F4 (li)
+            { f: 392.00, d: 1.2 }, // G4 (hat)
+            { f: 440.00, d: 1.2 }, // A4 (ada)
+            { f: 392.00, d: 1.2 }, // G4 (tempat)
+            { f: 349.23, d: 2.4 }, // F4 (longgar)
+            
+            { f: 329.63, d: 0.6 }, // E4 (A)
+            { f: 349.23, d: 0.6 }, // F4 (ku)
+            { f: 392.00, d: 1.2 }, // G4 (in)
+            { f: 440.00, d: 1.2 }, // A4 (gin)
+            { f: 392.00, d: 1.2 }, // G4 (ting)
+            { f: 349.23, d: 2.4 }  // F4 (gal)
+        ];
+
+        function startSynthLullaby() {
+            if (sfxCtx.state === 'suspended') {
+                sfxCtx.resume();
+            }
+            stopSynthLullaby();
+            isMusicPlaying = true;
+            isUsingFallbackSynth = true;
+            
+            const btn = document.getElementById('music-toggle-btn');
+            btn.classList.add('playing');
+            btn.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
+
+            let noteIdx = 0;
+            
+            function playNextSynthNote() {
+                if (!isMusicPlaying || !isUsingFallbackSynth) return;
+                
+                const note = salPriadiMelody[noteIdx];
+                const osc = sfxCtx.createOscillator();
+                const gain = sfxCtx.createGain();
+                
+                osc.type = 'sine'; // Pure sweet bell music box
+                osc.frequency.setValueAtTime(note.f, sfxCtx.currentTime);
+                
+                gain.gain.setValueAtTime(0, sfxCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.12, sfxCtx.currentTime + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + note.d);
+
+                osc.connect(gain);
+                gain.connect(sfxCtx.destination);
+                
+                osc.start();
+                osc.stop(sfxCtx.currentTime + note.d);
+                
+                synthNotesPlaying.push(osc);
+                
+                synthInterval = setTimeout(() => {
+                    noteIdx = (noteIdx + 1) % salPriadiMelody.length;
+                    playNextSynthNote();
+                }, note.d * 1000);
+            }
+
+            playNextSynthNote();
+
+            // Set dynamic stop strictly at 2 minutes (120 seconds limit)
+            setTimeout(() => {
+                if (isUsingFallbackSynth && isMusicPlaying) {
+                    stopMusicGracefully();
+                }
+            }, 120000);
+        }
+
+        function stopSynthLullaby() {
+            clearTimeout(synthInterval);
+            synthNotesPlaying.forEach(osc => {
+                try { osc.stop(); } catch(e){}
+            });
+            synthNotesPlaying = [];
+        }
+
+        function playMP3() {
+            isMusicPlaying = true;
+            isUsingFallbackSynth = false;
+            
+            const btn = document.getElementById('music-toggle-btn');
+            btn.classList.add('playing');
+            btn.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
+
+            mainAudio.play().then(() => {
+                // Limit exactly to 2 minutes
+                clearInterval(playTimer);
+                playTimer = setInterval(() => {
+                    if (mainAudio.currentTime >= 120) {
+                        stopMusicGracefully();
+                    }
+                }, 1000);
+            }).catch(err => {
+                console.log("Gagal memutar music.mp3. Beralih ke Synth.");
+                startSynthLullaby();
+            });
+        }
+
+        function stopMusicGracefully() {
+            if (!isUsingFallbackSynth) {
+                mainAudio.pause();
+                mainAudio.currentTime = 0;
+            }
+            stopSynthLullaby();
+            isMusicPlaying = false;
+            const btn = document.getElementById('music-toggle-btn');
+            btn.classList.remove('playing');
+            btn.innerHTML = '<i class="fa-solid fa-music"></i>';
+            clearInterval(playTimer);
+        }
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                stopMusicGracefully();
+            } else {
+                if (isUsingFallbackSynth) {
+                    startSynthLullaby();
+                } else {
+                    playMP3();
+                }
+            }
+        }
+
         function startQuiz() {
             document.getElementById('screen-start').classList.remove('active');
             document.getElementById('progress-container').style.display = 'block';
             document.getElementById('album-container').style.display = 'block';
             document.getElementById('screen-question').classList.add('active');
             
-            // Auto play background YouTube video music on start
-            if (ytPlayer && !isMusicPlaying) {
-                ytPlayer.playVideo();
-            }
+            // Try playing MP3 first, will fallback to Synth automatically if not uploaded
+            playMP3();
             renderQuestion();
         }
 
@@ -1201,7 +1222,6 @@
             document.getElementById('quiz-sub-title').innerText = "Kamu pacar terbaik di dunia!";
             updateKuromiState('love');
 
-            // Fully unlock sticker book
             for (let i = 1; i <= 5; i++) {
                 unlockSticker(i);
             }
@@ -1237,7 +1257,6 @@
             }
         }
 
-        // Initialize Avatar rendering on window load
         window.onload = function() {
             updateKuromiState('happy');
         }
