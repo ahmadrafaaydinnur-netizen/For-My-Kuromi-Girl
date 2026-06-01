@@ -443,26 +443,6 @@
             display: none;
         }
 
-        .preview-audio-indicator {
-            background-color: #2b1d42;
-            border: 1px solid var(--primary-purple);
-            border-radius: 12px;
-            padding: 8px 12px;
-            font-size: 11px;
-            color: #d8b4fe;
-            margin-bottom: 15px;
-            line-height: 1.4;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-align: left;
-        }
-
-        .preview-audio-indicator i {
-            font-size: 16px;
-            color: var(--kuromi-pink);
-        }
-
         .heart-pulse {
             font-size: 65px;
             color: var(--kuromi-pink);
@@ -477,6 +457,7 @@
             100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--kuromi-pink)); }
         }
 
+        /* Responsive scaling adjustment */
         @media (max-width: 480px) {
             .quiz-container {
                 padding: 25px 18px;
@@ -487,6 +468,18 @@
             .question-text {
                 font-size: 16px;
             }
+        }
+
+        /* Off-screen placeholder container for the YouTube API iframe player */
+        #yt-player-container {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -499,6 +492,11 @@
         <span class="floating-emoji" style="top: 82%; right: 8%; animation-delay: 3s;">😈</span>
         <span class="floating-emoji" style="top: 45%; left: 4%; animation-delay: 0.5s;">🦇</span>
         <span class="floating-emoji" style="top: 52%; right: 4%; animation-delay: 2.5s;">✨</span>
+    </div>
+
+    <!-- Hidden audio element placeholder for YT -->
+    <div id="yt-player-container">
+        <div id="yt-player-placeholder"></div>
     </div>
 
     <div class="quiz-container">
@@ -523,14 +521,7 @@
             
             <!-- SCREEN START -->
             <div class="screen-card active" id="screen-start">
-                <div class="preview-audio-indicator">
-                    <i class="fa-solid fa-compact-disc"></i>
-                    <div>
-                        <strong>Mode Audio Bebas Iklan!</strong><br>
-                        Guna memutar lagu asli Sal Priadi secara 100% jernih tanpa iklan aneh, silakan upload file musik lagu aslinya dengan nama <code>music.mp3</code> ke folder GitHub kamu. Jika belum diupload, website otomatis memutar aransemen kotak musik manis di bawah!
-                    </div>
-                </div>
-                <p class="question-text" style="font-size: 16px; font-family: 'Quicksand', sans-serif; line-height: 1.5;">
+                <p class="question-text" style="font-size: 16px; font-family: 'Quicksand', sans-serif; line-height: 1.5; margin-bottom: 25px;">
                     Hai Denaya! Rafa punya kuis lucu bertema Kuromi buat kamu. Jawab semua pertanyaan tentang Rafa dengan benar buat dapetin kejutan spesial ya! Ready? 💀😈
                 </p>
                 <button class="action-btn" onclick="startQuiz()">Mulai Sekarang 💜</button>
@@ -555,7 +546,6 @@
                 <button class="action-btn" id="next-submit-btn" onclick="handleSubmit()">Kirim Jawaban 🖤</button>
             </div>
 
-            <!-- DODGE LOVE SCREEN -->
             <div class="screen-card" id="screen-love">
                 <p class="question-text">Yeayy kuisnya beres! Tapi sebelum dapet hadiahnya... Denaya sayang Rafa gak? 🥺💜</p>
                 <div class="dodge-container">
@@ -591,7 +581,6 @@
                 <!-- Slot 1 -->
                 <div class="sticker-slot" id="slot-1">
                     <i class="fa-solid fa-lock"></i>
-                    <!-- Sticker 1 SVG (Cute Kuromi Cap Icon) -->
                     <svg viewBox="0 0 100 100">
                         <path d="M50 15 C30 15 20 28 20 50 C20 68 35 80 50 80 C65 80 80 68 80 50 C80 28 70 15 50 15 Z" fill="#25163c"/>
                         <circle cx="28" cy="25" r="10" fill="#f15bb5"/>
@@ -611,7 +600,6 @@
                 <!-- Slot 2 -->
                 <div class="sticker-slot" id="slot-2">
                     <i class="fa-solid fa-lock"></i>
-                    <!-- Sticker 2 SVG (Pink Devil Heart) -->
                     <svg viewBox="0 0 100 100">
                         <path d="M12 35 C12 18, 30 15, 50 32 C70 15, 88 18, 88 35 C88 58, 50 82, 50 82 C50 82, 12 58, 12 35 Z" fill="#f15bb5"/>
                         <path d="M22 25 Q10 10 18 35 Z" fill="#08060c"/>
@@ -626,7 +614,6 @@
                 <!-- Slot 3 -->
                 <div class="sticker-slot" id="slot-3">
                     <i class="fa-solid fa-lock"></i>
-                    <!-- Sticker 3 SVG (Kuromi Sweet Bat) -->
                     <svg viewBox="0 0 100 100">
                         <path d="M50 50 L10 32 Q25 45 28 55 Q18 62 10 58 L50 64 Z" fill="#25163c"/>
                         <path d="M50 50 L90 32 Q75 45 72 55 Q82 62 90 58 L50 64 Z" fill="#25163c"/>
@@ -639,7 +626,6 @@
                 <!-- Slot 4 -->
                 <div class="sticker-slot" id="slot-4">
                     <i class="fa-solid fa-lock"></i>
-                    <!-- Sticker 4 SVG (Kuromi Gothic Crown) -->
                     <svg viewBox="0 0 100 100">
                         <polygon points="50,15 65,45 95,50 70,70 80,95 50,80 20,95 30,70 5,50 35,45" fill="#9b5de5"/>
                         <polygon points="50,25 60,48 85,50 65,66 72,86 50,73 28,86 35,66 15,50 40,48" fill="#f15bb5"/>
@@ -652,7 +638,6 @@
                 <!-- Slot 5 -->
                 <div class="sticker-slot" id="slot-5">
                     <i class="fa-solid fa-lock"></i>
-                    <!-- Sticker 5 SVG (Secret Love Heart Lock) -->
                     <svg viewBox="0 0 100 100">
                         <path d="M20 40 C20 22 40 18 50 32 C60 18 80 22 80 40 C80 65 50 88 50 88 C50 88 20 65 20 40 Z" fill="#08060c" stroke="#f15bb5" stroke-width="4"/>
                         <circle cx="50" cy="44" r="5" fill="#f15bb5"/>
@@ -800,26 +785,94 @@
             document.getElementById('kuromi-avatar-frame').innerHTML = getKuromiAvatarSVG(expr);
         }
 
-        // Dual Engine Audio Setup
+        // Force YouTube to play securely via youtube-nocookie to completely filter audio voiceovers/ads
+        let player;
         let isMusicPlaying = false;
-        let isUsingFallbackSynth = false;
-        let playTimer;
-        let synthInterval;
-        let synthNotesPlaying = [];
-        
-        // Load the local clean MP3 file (100% ad-free, 100% clean)
-        let mainAudio = new Audio('music.mp3');
-        mainAudio.loop = true;
+        let isYtReady = false;
+        let timerInterval;
 
-        // Monitor MP3 capability and fallback automatically
-        mainAudio.addEventListener('error', function() {
-            console.log("File music.mp3 tidak ditemukan atau gagal di-load. Otomatis beralih ke Synth Kotak Musik.");
-            isUsingFallbackSynth = true;
-        });
+        // Inject YouTube API script
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player-placeholder', {
+                height: '1',
+                width: '1',
+                videoId: '4OL6d6NZ3I0', // Sal Priadi - I’d like to watch you sleeping
+                host: 'https://www.youtube-nocookie.com', // Strict NoCookie mode bypasses tracking and bumper ads!
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'modestbranding': 1,
+                    'iv_load_policy': 3,
+                    'enablejsapi': 1,
+                    'origin': window.location.origin
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            isYtReady = true;
+            player.setVolume(85);
+        }
+
+        function onPlayerStateChange(event) {
+            // Track playback time to cut exact 2 minutes (120 seconds)
+            if (event.data === YT.PlayerState.PLAYING) {
+                isMusicPlaying = true;
+                const btn = document.getElementById('music-toggle-btn');
+                btn.classList.add('playing');
+                
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    if (player && typeof player.getCurrentTime === 'function') {
+                        const curTime = player.getCurrentTime();
+                        if (curTime >= 120) {
+                            stopMusicGracefully();
+                        }
+                    }
+                }, 1000);
+            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+                isMusicPlaying = false;
+                document.getElementById('music-toggle-btn').classList.remove('playing');
+                clearInterval(timerInterval);
+            }
+        }
+
+        function playMusic() {
+            if (isYtReady && player) {
+                player.playVideo();
+            }
+        }
+
+        function stopMusicGracefully() {
+            if (isYtReady && player) {
+                player.pauseVideo();
+            }
+            isMusicPlaying = false;
+            document.getElementById('music-toggle-btn').classList.remove('playing');
+            clearInterval(timerInterval);
+        }
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                stopMusicGracefully();
+            } else {
+                playMusic();
+            }
+        }
 
         const sfxCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // Safe SFX Beep Sounds for Correct/Wrong indicators
         function playSound(type) {
             if (sfxCtx.state === 'suspended') {
                 sfxCtx.resume();
@@ -859,152 +912,14 @@
             }
         }
 
-        // Sal Priadi "I'd like to watch you sleeping" music box sheet
-        const salPriadiMelody = [
-            { f: 329.63, d: 0.6 }, // E4 (I'd)
-            { f: 349.23, d: 0.6 }, // F4 (like)
-            { f: 392.00, d: 0.6 }, // G4 (to)
-            { f: 440.00, d: 1.2 }, // A4 (watch)
-            { f: 392.00, d: 1.2 }, // G4 (you)
-            { f: 349.23, d: 2.4 }, // F4 (sleeping)
-            
-            { f: 349.23, d: 0.6 }, // F4 (Leb)
-            { f: 392.00, d: 0.6 }, // G4 (ih)
-            { f: 440.00, d: 1.2 }, // A4 (ser)
-            { f: 392.00, d: 1.2 }, // G4 (ing)
-            { f: 349.23, d: 2.4 }, // F4 (menganga)
-
-            { f: 293.66, d: 0.6 }, // D4 (A)
-            { f: 329.63, d: 0.6 }, // E4 (ku)
-            { f: 349.23, d: 1.2 }, // F4 (li)
-            { f: 392.00, d: 1.2 }, // G4 (hat)
-            { f: 440.00, d: 1.2 }, // A4 (ada)
-            { f: 392.00, d: 1.2 }, // G4 (tempat)
-            { f: 349.23, d: 2.4 }, // F4 (longgar)
-            
-            { f: 329.63, d: 0.6 }, // E4 (A)
-            { f: 349.23, d: 0.6 }, // F4 (ku)
-            { f: 392.00, d: 1.2 }, // G4 (in)
-            { f: 440.00, d: 1.2 }, // A4 (gin)
-            { f: 392.00, d: 1.2 }, // G4 (ting)
-            { f: 349.23, d: 2.4 }  // F4 (gal)
-        ];
-
-        function startSynthLullaby() {
-            if (sfxCtx.state === 'suspended') {
-                sfxCtx.resume();
-            }
-            stopSynthLullaby();
-            isMusicPlaying = true;
-            isUsingFallbackSynth = true;
-            
-            const btn = document.getElementById('music-toggle-btn');
-            btn.classList.add('playing');
-            btn.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
-
-            let noteIdx = 0;
-            
-            function playNextSynthNote() {
-                if (!isMusicPlaying || !isUsingFallbackSynth) return;
-                
-                const note = salPriadiMelody[noteIdx];
-                const osc = sfxCtx.createOscillator();
-                const gain = sfxCtx.createGain();
-                
-                osc.type = 'sine'; // Pure sweet bell music box
-                osc.frequency.setValueAtTime(note.f, sfxCtx.currentTime);
-                
-                gain.gain.setValueAtTime(0, sfxCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.12, sfxCtx.currentTime + 0.05);
-                gain.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + note.d);
-
-                osc.connect(gain);
-                gain.connect(sfxCtx.destination);
-                
-                osc.start();
-                osc.stop(sfxCtx.currentTime + note.d);
-                
-                synthNotesPlaying.push(osc);
-                
-                synthInterval = setTimeout(() => {
-                    noteIdx = (noteIdx + 1) % salPriadiMelody.length;
-                    playNextSynthNote();
-                }, note.d * 1000);
-            }
-
-            playNextSynthNote();
-
-            // Set dynamic stop strictly at 2 minutes (120 seconds limit)
-            setTimeout(() => {
-                if (isUsingFallbackSynth && isMusicPlaying) {
-                    stopMusicGracefully();
-                }
-            }, 120000);
-        }
-
-        function stopSynthLullaby() {
-            clearTimeout(synthInterval);
-            synthNotesPlaying.forEach(osc => {
-                try { osc.stop(); } catch(e){}
-            });
-            synthNotesPlaying = [];
-        }
-
-        function playMP3() {
-            isMusicPlaying = true;
-            isUsingFallbackSynth = false;
-            
-            const btn = document.getElementById('music-toggle-btn');
-            btn.classList.add('playing');
-            btn.innerHTML = '<i class="fa-solid fa-compact-disc"></i>';
-
-            mainAudio.play().then(() => {
-                // Limit exactly to 2 minutes
-                clearInterval(playTimer);
-                playTimer = setInterval(() => {
-                    if (mainAudio.currentTime >= 120) {
-                        stopMusicGracefully();
-                    }
-                }, 1000);
-            }).catch(err => {
-                console.log("Gagal memutar music.mp3. Beralih ke Synth.");
-                startSynthLullaby();
-            });
-        }
-
-        function stopMusicGracefully() {
-            if (!isUsingFallbackSynth) {
-                mainAudio.pause();
-                mainAudio.currentTime = 0;
-            }
-            stopSynthLullaby();
-            isMusicPlaying = false;
-            const btn = document.getElementById('music-toggle-btn');
-            btn.classList.remove('playing');
-            btn.innerHTML = '<i class="fa-solid fa-music"></i>';
-            clearInterval(playTimer);
-        }
-
-        function toggleMusic() {
-            if (isMusicPlaying) {
-                stopMusicGracefully();
-            } else {
-                if (isUsingFallbackSynth) {
-                    startSynthLullaby();
-                } else {
-                    playMP3();
-                }
-            }
-        }
-
         function startQuiz() {
             document.getElementById('screen-start').classList.remove('active');
             document.getElementById('progress-container').style.display = 'block';
             document.getElementById('album-container').style.display = 'block';
             document.getElementById('screen-question').classList.add('active');
             
-            // Try playing MP3 first, will fallback to Synth automatically if not uploaded
-            playMP3();
+            // Starts clean original YouTube stream automatically!
+            playMusic();
             renderQuestion();
         }
 
