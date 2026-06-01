@@ -457,7 +457,6 @@
             100% { transform: scale(1); filter: drop-shadow(0 0 2px var(--kuromi-pink)); }
         }
 
-        /* Responsive scaling adjustment */
         @media (max-width: 480px) {
             .quiz-container {
                 padding: 25px 18px;
@@ -468,18 +467,6 @@
             .question-text {
                 font-size: 16px;
             }
-        }
-
-        /* Off-screen placeholder container for the YouTube API iframe player */
-        #yt-player-container {
-            position: absolute;
-            left: -9999px;
-            top: -9999px;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            overflow: hidden;
-            pointer-events: none;
         }
     </style>
 </head>
@@ -494,10 +481,8 @@
         <span class="floating-emoji" style="top: 52%; right: 4%; animation-delay: 2.5s;">✨</span>
     </div>
 
-    <!-- Hidden audio element placeholder for YT -->
-    <div id="yt-player-container">
-        <div id="yt-player-placeholder"></div>
-    </div>
+    <!-- NATIVE AUDIO PLAYER (Murni 100% Bebas Iklan) -->
+    <audio id="bg-music" src="music.mp3" loop></audio>
 
     <div class="quiz-container">
         
@@ -546,6 +531,7 @@
                 <button class="action-btn" id="next-submit-btn" onclick="handleSubmit()">Kirim Jawaban 🖤</button>
             </div>
 
+            <!-- LOVE SCREEN -->
             <div class="screen-card" id="screen-love">
                 <p class="question-text">Yeayy kuisnya beres! Tapi sebelum dapet hadiahnya... Denaya sayang Rafa gak? 🥺💜</p>
                 <div class="dodge-container">
@@ -572,7 +558,7 @@
             <div class="progress-bar" id="progress-bar"></div>
         </div>
 
-        <!-- SVG Sticker Book (Guaranteed to load instantly!) -->
+        <!-- SVG Sticker Book -->
         <div class="sticker-album" id="album-container" style="display: none;">
             <div class="album-title">
                 <i class="fa-solid fa-book-open"></i> Album Sticker Kuromi Denaya
@@ -699,7 +685,7 @@
         let currentQuestionIndex = 0;
         let isAnswerChecked = false;
 
-        // Vector SVG Generator exactly matching image_0acfac.jpg plush rug
+        // Custom Vector SVG Generator
         function getKuromiAvatarSVG(expression) {
             let faceContent = '';
             let blushContent = `<ellipse cx="68" cy="136" rx="10" ry="5" fill="rgba(241, 91, 181, 0.45)" /><ellipse cx="132" cy="136" rx="10" ry="5" fill="rgba(241, 91, 181, 0.45)" />`;
@@ -785,98 +771,85 @@
             document.getElementById('kuromi-avatar-frame').innerHTML = getKuromiAvatarSVG(expr);
         }
 
-        // Force YouTube to play securely via youtube-nocookie to completely filter audio voiceovers/ads
-        let player;
+        const localAudio = document.getElementById('bg-music');
         let isMusicPlaying = false;
-        let isYtReady = false;
-        let timerInterval;
+        let syntheticAudioActive = false;
+        let localAudioAvailable = true;
 
-        // Inject YouTube API script
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        localAudio.addEventListener('error', () => {
+            localAudioAvailable = false;
+        });
 
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player-placeholder', {
-                height: '1',
-                width: '1',
-                videoId: '4OL6d6NZ3I0', // Sal Priadi - I’d like to watch you sleeping
-                host: 'https://www.youtube-nocookie.com', // Strict NoCookie mode bypasses tracking and bumper ads!
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'rel': 0,
-                    'showinfo': 0,
-                    'modestbranding': 1,
-                    'iv_load_policy': 3,
-                    'enablejsapi': 1,
-                    'origin': window.location.origin
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            isYtReady = true;
-            player.setVolume(85);
-        }
-
-        function onPlayerStateChange(event) {
-            // Track playback time to cut exact 2 minutes (120 seconds)
-            if (event.data === YT.PlayerState.PLAYING) {
-                isMusicPlaying = true;
-                const btn = document.getElementById('music-toggle-btn');
-                btn.classList.add('playing');
-                
-                clearInterval(timerInterval);
-                timerInterval = setInterval(() => {
-                    if (player && typeof player.getCurrentTime === 'function') {
-                        const curTime = player.getCurrentTime();
-                        if (curTime >= 120) {
-                            stopMusicGracefully();
-                        }
-                    }
-                }, 1000);
-            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-                isMusicPlaying = false;
-                document.getElementById('music-toggle-btn').classList.remove('playing');
-                clearInterval(timerInterval);
-            }
-        }
-
-        function playMusic() {
-            if (isYtReady && player) {
-                player.playVideo();
-            }
-        }
-
-        function stopMusicGracefully() {
-            if (isYtReady && player) {
-                player.pauseVideo();
-            }
-            isMusicPlaying = false;
-            document.getElementById('music-toggle-btn').classList.remove('playing');
-            clearInterval(timerInterval);
-        }
-
-        function toggleMusic() {
-            if (isMusicPlaying) {
-                stopMusicGracefully();
-            } else {
-                playMusic();
-            }
-        }
-
+        // Web Audio API Synthesizer (Cute Music Box)
         const sfxCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let synthInterval;
+        let noteIndex = 0;
+
+        const salPriadiMelody = [
+            { note: "G4", dur: 1 }, { note: "E4", dur: 1 }, { note: "G4", dur: 1 }, { note: "E4", dur: 1 },
+            { note: "G4", dur: 1 }, { note: "A4", dur: 1 }, { note: "G4", dur: 2 }, { note: "rest", dur: 1 },
+            { note: "G4", dur: 1 }, { note: "F4", dur: 1 }, { note: "E4", dur: 1 }, { note: "D4", dur: 1 },
+            { note: "C4", dur: 3 }, { note: "rest", dur: 2 },
+            { note: "E4", dur: 1 }, { note: "F4", dur: 1 }, { note: "G4", dur: 2 }, { note: "G4", dur: 1 },
+            { note: "C5", dur: 3 }, { note: "B4", dur: 1 }, { note: "A4", dur: 2 }, { note: "G4", dur: 2 },
+            { note: "F4", dur: 2 }, { note: "E4", dur: 2 }, { note: "D4", dur: 4 }
+        ];
+
+        const noteFreqs = {
+            "C4": 261.63, "D4": 293.66, "E4": 329.63, "F4": 349.23, "G4": 392.00,
+            "A4": 440.00, "B4": 493.88, "C5": 523.25
+        };
+
+        function playSynthTone(freq, duration) {
+            if (sfxCtx.state === 'suspended') sfxCtx.resume();
+            
+            const osc = sfxCtx.createOscillator();
+            const gainNode = sfxCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, sfxCtx.currentTime);
+
+            gainNode.gain.setValueAtTime(0.12, sfxCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, sfxCtx.currentTime + duration - 0.05);
+
+            osc.connect(gainNode);
+            gainNode.connect(sfxCtx.destination);
+
+            osc.start();
+            osc.stop(sfxCtx.currentTime + duration);
+        }
+
+        let synthStartTime = 0;
+        function playSynthMusic() {
+            if (synthInterval) return;
+            syntheticAudioActive = true;
+            synthStartTime = Date.now();
+            noteIndex = 0;
+
+            synthInterval = setInterval(() => {
+                if (Date.now() - synthStartTime >= 120000) {
+                    stopMusic();
+                    return;
+                }
+
+                const curr = salPriadiMelody[noteIndex];
+                if (curr.note !== "rest") {
+                    const freq = noteFreqs[curr.note];
+                    playSynthTone(freq, curr.dur * 0.35);
+                }
+                
+                noteIndex = (noteIndex + 1) % salPriadiMelody.length;
+            }, 380);
+        }
+
+        function stopSynthMusic() {
+            clearInterval(synthInterval);
+            synthInterval = null;
+            syntheticAudioActive = false;
+        }
 
         function playSound(type) {
-            if (sfxCtx.state === 'suspended') {
-                sfxCtx.resume();
-            }
+            if (sfxCtx.state === 'suspended') sfxCtx.resume();
             const osc = sfxCtx.createOscillator();
             const gain = sfxCtx.createGain();
             osc.connect(gain);
@@ -912,13 +885,32 @@
             }
         }
 
+        function playMusic() {
+            isMusicPlaying = true;
+            document.getElementById('music-toggle-btn').classList.add('playing');
+            if (localAudioAvailable) {
+                localAudio.play().catch(err => { playSynthMusic(); });
+            } else {
+                playSynthMusic();
+            }
+        }
+
+        function stopMusic() {
+            isMusicPlaying = false;
+            document.getElementById('music-toggle-btn').classList.remove('playing');
+            localAudio.pause();
+            stopSynthMusic();
+        }
+
+        function toggleMusic() {
+            if (isMusicPlaying) stopMusic(); else playMusic();
+        }
+
         function startQuiz() {
             document.getElementById('screen-start').classList.remove('active');
             document.getElementById('progress-container').style.display = 'block';
             document.getElementById('album-container').style.display = 'block';
             document.getElementById('screen-question').classList.add('active');
-            
-            // Starts clean original YouTube stream automatically!
             playMusic();
             renderQuestion();
         }
@@ -977,21 +969,15 @@
 
         function handleSubmit() {
             const qData = quizQuestions[currentQuestionIndex];
-            
             if (isAnswerChecked) {
                 currentQuestionIndex++;
-                if (currentQuestionIndex < quizQuestions.length) {
-                    renderQuestion();
-                } else {
-                    showLoveScreen();
-                }
+                if (currentQuestionIndex < quizQuestions.length) renderQuestion(); else showLoveScreen();
                 return;
             }
 
             const field = document.getElementById('answer-field');
             const rawAns = field.value.trim().toLowerCase();
             const correctAns = qData.correctAnswer.toLowerCase();
-            
             const isCorrect = (rawAns === correctAns);
 
             const icon = document.getElementById('validation-icon');
@@ -1008,11 +994,9 @@
                 icon.className = "feedback-icon fa-solid fa-circle-check";
                 icon.style.color = "var(--success-green)";
                 icon.style.display = "block";
-
                 feedback.innerText = "Jawaban Benar! Kamu emang paling pinter! 💜✨";
                 feedback.style.color = "var(--success-green)";
                 feedback.style.display = "block";
-
                 unlockSticker(qData.id);
 
                 submitBtn.innerText = 'Pertanyaan Berikutnya ✨';
@@ -1021,18 +1005,13 @@
                 playSound('wrong');
                 updateKuromiState('sad');
                 field.classList.add('error');
-                
                 icon.className = "feedback-icon fa-solid fa-circle-xmark";
                 icon.style.color = "var(--error-red)";
                 icon.style.display = "block";
-
                 feedback.innerText = qData.wrongMessage;
                 feedback.style.color = "var(--error-red)";
                 feedback.style.display = "block";
-
-                setTimeout(() => {
-                    field.classList.remove('error');
-                }, 420);
+                setTimeout(() => { field.classList.remove('error'); }, 420);
             }
         }
 
@@ -1042,7 +1021,6 @@
             const allBtns = document.querySelectorAll('#options-container .option-btn');
 
             allBtns.forEach(btn => btn.disabled = true); 
-
             const isCorrect = (selectedVal === qData.correctAnswer);
 
             if (isCorrect) {
@@ -1050,14 +1028,11 @@
                 updateKuromiState('wink');
                 clickedBtn.classList.add('correct');
                 const checkIcon = clickedBtn.querySelector('.fa-solid');
-                if (checkIcon) {
-                    checkIcon.className = "fa-solid fa-circle-check";
-                }
+                if (checkIcon) checkIcon.className = "fa-solid fa-circle-check";
 
                 feedback.innerText = "Yess! Kroos adalah si gembrot kesayangan Rafa! 🐱💖";
                 feedback.style.color = "var(--success-green)";
                 feedback.style.display = "block";
-
                 unlockSticker(qData.id);
 
                 setTimeout(() => {
@@ -1066,15 +1041,12 @@
                     actionBtn.style.display = 'block';
                     isAnswerChecked = true;
                 }, 500);
-
             } else {
                 playSound('wrong');
                 updateKuromiState('sad');
                 clickedBtn.classList.add('wrong');
                 const crossIcon = clickedBtn.querySelector('.fa-solid');
-                if (crossIcon) {
-                    crossIcon.className = "fa-solid fa-circle-xmark";
-                }
+                if (crossIcon) crossIcon.className = "fa-solid fa-circle-xmark";
 
                 feedback.innerText = qData.wrongMessage;
                 feedback.style.color = "var(--error-red)";
@@ -1093,9 +1065,7 @@
 
         function unlockSticker(id) {
             const slot = document.getElementById(`slot-${id}`);
-            if (slot && !slot.classList.contains('unlocked')) {
-                slot.classList.add('unlocked');
-            }
+            if (slot && !slot.classList.contains('unlocked')) slot.classList.add('unlocked');
         }
 
         function showLoveScreen() {
@@ -1103,27 +1073,21 @@
             document.getElementById('progress-container').style.display = 'none';
             document.getElementById('screen-question').classList.remove('active');
             document.getElementById('screen-love').classList.add('active');
-            
             document.getElementById('quiz-main-title').innerText = "Spesial untuk Denaya";
             document.getElementById('quiz-sub-title').innerText = "Please answer honestly... 🥺";
             updateKuromiState('happy');
         }
 
         function dodgeButton(event) {
-            if (event) {
-                event.preventDefault(); 
-            }
+            if (event) event.preventDefault(); 
             playSound('wrong');
             updateKuromiState('sad');
             const btnNo = document.getElementById('btn-no');
             const container = document.querySelector('.quiz-container');
-            
             const maxX = container.clientWidth - btnNo.clientWidth - 40;
             const maxY = 130 - btnNo.clientHeight - 20;
-
             const randomX = Math.max(10, Math.floor(Math.random() * maxX));
             const randomY = Math.max(10, Math.floor(Math.random() * maxY));
-
             btnNo.style.left = randomX + 'px';
             btnNo.style.top = randomY + 'px';
         }
@@ -1132,15 +1096,10 @@
             playSound('victory');
             document.getElementById('screen-love').classList.remove('active');
             document.getElementById('screen-success').classList.add('active');
-            
             document.getElementById('quiz-main-title').innerText = "I Love You, Denaya! ❤️";
             document.getElementById('quiz-sub-title').innerText = "Kamu pacar terbaik di dunia!";
             updateKuromiState('love');
-
-            for (let i = 1; i <= 5; i++) {
-                unlockSticker(i);
-            }
-            
+            for (let i = 1; i <= 5; i++) unlockSticker(i);
             triggerHeartExplosions();
         }
 
@@ -1157,17 +1116,12 @@
                     heart.style.zIndex = '999';
                     heart.style.transition = 'all 2.8s cubic-bezier(0.1, 0.8, 0.3, 1)';
                     heart.style.pointerEvents = 'none';
-                    
                     document.body.appendChild(heart);
-                    
                     setTimeout(() => {
                         heart.style.transform = `translateY(-${window.innerHeight + 100}px) translateX(${Math.random() * 120 - 60}px) rotate(${Math.random() * 360}deg)`;
                         heart.style.opacity = '0';
                     }, 50);
-
-                    setTimeout(() => {
-                        heart.remove();
-                    }, 2850);
+                    setTimeout(() => { heart.remove(); }, 2850);
                 }, i * 120);
             }
         }
