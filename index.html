@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Denaya Hana Almira</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #050505;
+            background-image: radial-gradient(circle at 50% 40%, #160303 0%, #050505 75%);
+            background-attachment: fixed;
+        }
+        .font-serif-header { font-family: 'Cinzel', serif; }
+        .font-serif-body { font-family: 'Playfair Display', serif; }
+        
+        /* Tema Warna Merah Balap Resmi Ferrari (Rosso Corsa) */
+        .text-ferrari-red { color: #E81A23; }
+        .bg-ferrari-red { background-color: #E81A23; }
+        .border-ferrari-red { border-color: #E81A23; }
+
+        /* Efek Pendaran Neon Balap */
+        .neon-glow-red {
+            text-shadow: 0 0 10px rgba(232, 26, 35, 0.6);
+        }
+        .box-glow {
+            border: 1px solid rgba(232, 26, 35, 0.15);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(232, 26, 35, 0.05);
+        }
+        
+        @keyframes pulseSoft {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.75; }
+        }
+        .pulse-slow { animation: pulseSoft 3.5s infinite ease-in-out; }
+
+        /* TEKNIK CINEMATIC BLENDING: Menghilangkan garis tepi foto secara total */
+        .image-blend-overlay-x {
+            background: linear-gradient(to right, #050505 0%, transparent 15%, transparent 85%, #050505 100%);
+        }
+        .image-blend-overlay-y {
+            background: linear-gradient(to bottom, #050505 0%, transparent 20%, transparent 80%, #050505 100%);
+        }
+    </style>
+</head>
+<body class="text-neutral-300 min-h-screen flex flex-col items-center justify-between px-4 selection:bg-red-700 selection:text-white">
+
+    <!-- AUDIO ELEMENT (Formula 1 Official Theme Song) -->
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- HEADER STATUS BAR -->
+    <div class="w-full max-w-3xl pt-6 flex justify-between text-[9px] tracking-[0.4em] text-neutral-600 font-serif-header border-b border-neutral-900/60 pb-3">
+        <div class="flex items-center gap-2">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-red-600 animate-ping"></span>
+            SCUDERIA FERRARI LIVE
+        </div>
+        <div>LAP 16 / 16</div>
+    </div>
+
+    <!-- MAIN HERO SECTION -->
+    <header class="w-full max-w-xl text-center pt-10 pb-6 flex flex-col items-center">
+        
+        <!-- LOGO PERISAI RESMI FERRARI -->
+        <div class="w-16 h-20 mb-6 drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)] transition-transform duration-500 hover:scale-105">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Scuderia_Ferrari_Logo.svg/512px-Scuderia_Ferrari_Logo.svg.png" alt="Scuderia Ferrari Shield" class="w-full h-full object-contain">
+        </div>
+
+        <p class="text-[10px] tracking-[0.5em] text-neutral-500 font-serif-header mb-1">DEDICATED TO</p>
+        <h1 class="text-3xl md:text-4xl font-bold text-white tracking-wide font-serif-header mb-3">
+            Denaya Hana Almira
+        </h1>
+        
+        <p class="text-[9px] text-neutral-400 tracking-[0.35em] font-serif-header uppercase mb-8 pulse-slow">
+            — My heart belongs to this paddock —
+        </p>
+
+        <!-- AREA FOTO: CINEMATIC BLENDED POSTER (Tanpa Kotak, Menyatu Sempurna) -->
+        <div class="relative w-full max-w-md h-60 mx-auto my-4 overflow-hidden group">
+            <!-- Foto Konten Asli -->
+            <div class="absolute inset-0 flex gap-1">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3ki20lteODVhoGiHnb1DjaZFOa1xgFFup0w&s" alt="Charles Leclerc" class="w-1/2 h-full object-cover filter grayscale-[20%] contrast-[115%] brightness-[80%] transition-all duration-700 group-hover:grayscale-0 group-hover:brightness-95">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShdUpgFDAABZ7V9ZOxpnOn_8l0xyAp_v-Gmg&s" alt="Ferrari F1 Car" class="w-full h-full object-cover filter grayscale-[20%] contrast-[120%] brightness-[80%] transition-all duration-700 group-hover:grayscale-0 group-hover:brightness-95">
+            </div>
+            
+            <!-- Lapisan Pemudar Sisi Kiri-Kanan -->
+            <div class="absolute inset-0 image-blend-overlay-x pointer-events-none"></div>
+            <!-- Lapisan Pemudar Sisi Atas-Bawah -->
+            <div class="absolute inset-0 image-blend-overlay-y pointer-events-none"></div>
+            <!-- Efek Tint Merah Balap Lembut -->
+            <div class="absolute inset-0 bg-red-950/10 mix-blend-color-burn pointer-events-none"></div>
+        </div>
+
+        <!-- TOMBOL UTAMA -->
+        <button onclick="bukaSurat()" id="btn-buka" class="mt-6 bg-transparent hover:bg-neutral-900 text-neutral-200 border border-neutral-800 hover:border-neutral-600 px-10 py-3.5 rounded-none text-[10px] tracking-[0.3em] font-serif-header transition-all duration-300 tracking-widest shadow-2xl">
+            ACCESS TRANSMISSION ✉️
+        </button>
+    </header>
+
+    <!-- KONTEN SURAT (Tersembunyi Awal) -->
+    <main id="konten-surat" class="hidden w-full max-w-xl transition-all duration-1000 ease-in-out mb-24">
+        
+        <!-- SURAT UTAMA -->
+        <div class="box-glow bg-[#080808]/95 rounded-none p-8 md:p-12 text-center relative backdrop-blur-md">
+            
+            <div class="text-[9px] tracking-[0.4em] text-ferrari-red font-serif-header mb-2 font-bold">INTERNAL MEMO</div>
+            <h2 class="text-xl text-white font-serif-header tracking-[0.2em] mb-8 border-b border-neutral-900 pb-4">
+                STATEMENT OF APOLOGY
+            </h2>
+            
+            <!-- ISI TEKS UTAMA -->
+            <div class="space-y-6 text-sm text-neutral-300 font-light leading-relaxed font-serif-body italic">
+                <p>Hai sayang,</p>
+                <p>Aku mau minta maaf dengan tulus dari hati yang paling dalam.</p>
+                
+                <!-- Kalimat Inti dengan Pendaran Merah Khas Racing -->
+                <p class="text-ferrari-red font-semibold tracking-wide text-base neon-glow-red not-italic font-serif-header py-2 uppercase">
+                    Maafin aku sudah ngatain tiffosi.
+                </p>
+                
+                <p>Aku sadar itu salah. Aku janji gabakal ngulangin lagi.</p>
+                <p>Aku bakal lebih jaga ucapan dan sikap aku ke depannya, karena kamu itu berharga banget buat aku.</p>
+                <p>Terima kasih karena selalu sabar dan tetap ada buat aku. Aku beruntung punya kamu.</p>
+            </div>
+
+            <!-- AKSEN PANEL TELEMETRI F1 (Pengganti Bingkai Foto Cewek Lama) -->
+            <div class="mt-12 border border-neutral-900 bg-black p-4 text-left font-mono text-[10px] text-neutral-500 space-y-1">
+                <div class="text-ferrari-red font-bold font-serif-header text-center border-b border-neutral-900 pb-2 mb-2 tracking-widest">DRIVE DATA SUMMARY</div>
+                <div class="flex justify-between"><span>PILOT:</span> <span class="text-neutral-300">CHARLES LECLERC #16</span></div>
+                <div class="flex justify-between"><span>TEAM:</span> <span class="text-neutral-300">SCUDERIA FERRARI</span></div>
+                <div class="flex justify-between"><span>STATUS:</span> <span class="text-green-500 font-bold">MATCH WINNER</span></div>
+                <div class="flex justify-between"><span>DEDICATION:</span> <span class="text-neutral-300">DENAYA HANA ALMIRA</span></div>
+            </div>
+
+            <div class="text-center text-[10px] tracking-[0.35em] text-neutral-600 font-serif-header mt-10">
+                SIGNED WITH ENDLESS LOVE
+            </div>
+        </div>
+
+        <!-- FOOTER SELESAI -->
+        <div class="text-center space-y-3 py-16">
+            <h3 class="text-3xl text-white font-serif-header tracking-wider font-bold">I Love You</h3>
+            <p class="text-xs text-neutral-500 tracking-[0.4em] font-serif-header uppercase">To The Moon And Back</p>
+            
+            <!-- HITUNG MUNDUR DUA RIBU DUA PULUH ENAM -->
+            <div class="pt-8 text-[10px] tracking-widest text-neutral-500 font-serif-header">
+                🏁 RE-FUELING DAY : 5 DESEMBER — <span class="text-ferrari-red font-bold" id="countdown-days">--</span> HARI LAGI 🏁
+            </div>
+        </div>
+    </main>
+
+    <!-- F1 CONCEPT AUDIO PLAYER BAR -->
+    <footer class="fixed bottom-4 left-4 right-4 max-w-sm mx-auto bg-neutral-950/95 border border-neutral-900 rounded-none p-3.5 flex items-center justify-between backdrop-blur-md shadow-2xl z-50 box-glow">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-ferrari-red flex items-center justify-center text-[11px] text-white font-serif-header font-bold tracking-tighter italic">
+                F1
+            </div>
+            <div>
+                <div class="text-[11px] font-semibold text-neutral-200 tracking-wide">Formula 1 Official Theme</div>
+                <div class="text-[9px] text-neutral-500 font-mono">Brian Tyler — Radio Active</div>
+            </div>
+        </div>
+        
+        <button onclick="toggleMusic()" id="btn-play" class="w-8 h-8 bg-neutral-200 hover:bg-white text-black rounded-full flex items-center justify-center text-xs transition-all shadow-xl font-bold">
+            ▶
+        </button>
+    </footer>
+
+    <!-- GLOBAL BRAND FOOTER -->
+    <div class="w-full text-center text-[7px] tracking-[0.4em] text-neutral-700 font-serif-header uppercase pb-24">
+        OFFICIAL TEAM APOLOGY // CODE OVERHAUL V4
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const musik = document.getElementById('bg-music');
+        const btnPlay = document.getElementById('btn-play');
+        const kontenSurat = document.getElementById('konten-surat');
+
+        function bukaSurat() {
+            kontenSurat.classList.remove('hidden');
+            musik.play().catch(e => console.log("Autoplay didukung setelah interaksi user"));
+            btnPlay.innerText = "⏸";
+            document.getElementById('btn-buka').style.display = 'none';
+            
+            setTimeout(() => {
+                kontenSurat.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 150);
+        }
+
+        function toggleMusic() {
+            if (musik.paused) {
+                musik.play();
+                btnPlay.innerText = "⏸";
+            } else {
+                musik.pause();
+                btnPlay.innerText = "▶";
+            }
+        }
+
+        function hitungMundur() {
+            const sekarang = new Date();
+            let target = new Date(sekarang.getFullYear(), 11, 5); // Bulan Desember (indeks 11)
+            if (sekarang > target) target.setFullYear(target.getFullYear() + 1);
+            const selisih = target - sekarang;
+            document.getElementById('countdown-days').innerText = Math.ceil(selisih / (1000 * 60 * 60 * 24));
+        }
+        hitungMundur();
+    </script>
+</body>
+</html>
