@@ -3,158 +3,759 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Khusus Buat Kamu ❤️</title>
+    <title>Kuromi Quiz Spesial untuk Denaya 🖤💜</title>
+    
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
+        /* --- Kustomisasi Tema Kuromi (Purple, Pink & Dark Aesthetic) --- */
+        :root {
+            --bg-color: #171123;
+            --card-bg: #251b37;
+            --primary-purple: #9b5de5;
+            --kuromi-pink: #f15bb5;
+            --kuromi-black: #110d1a;
+            --text-light: #f3e8ff;
+            --accent-pink: #fee2e2;
+            --success-green: #10b981;
+            --error-red: #ef4444;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffeef2;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(155, 93, 229, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(241, 91, 181, 0.2) 0%, transparent 40%);
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #333;
+            color: var(--text-light);
+            overflow-x: hidden;
+            padding: 20px;
         }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+
+        /* --- Animasi Background Tengkorak / Hati Melayang --- */
+        .decorations {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.15;
+            animation: floatUpDown 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatUpDown {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-30px) rotate(15deg); }
+        }
+
+        /* --- Container Utama --- */
+        .quiz-container {
+            background-color: var(--card-bg);
+            border: 4px solid var(--primary-purple);
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(155, 93, 229, 0.3);
+            width: 100%;
+            max-width: 480px;
+            padding: 35px 25px;
             text-align: center;
-            max-width: 400px;
-            width: 90%;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* --- Header & Karakter Kuromi --- */
+        .kuromi-header {
+            margin-bottom: 25px;
             position: relative;
         }
+
+        .kuromi-img {
+            width: 130px;
+            height: 130px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+            animation: bounce 3s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .skull-divider {
+            color: var(--kuromi-pink);
+            font-size: 22px;
+            margin: 10px 0;
+        }
+
         h1 {
-            color: #ff4d6d;
+            font-size: 26px;
+            color: var(--kuromi-pink);
+            text-shadow: 2px 2px 0px var(--kuromi-black);
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 15px;
+            color: #c084fc;
+        }
+
+        /* --- Card Kuis & Pertanyaan --- */
+        .question-card {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .question-card.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-text {
+            font-size: 20px;
             margin-bottom: 20px;
-            font-size: 24px;
+            line-height: 1.4;
+            font-weight: 600;
         }
-        p {
+
+        /* --- Form Input & Feedback --- */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .ans-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: 3px solid #4a346b;
+            background-color: var(--kuromi-black);
+            color: var(--text-light);
+            font-family: 'Fredoka', sans-serif;
             font-size: 18px;
-            margin-bottom: 25px;
-            line-height: 1.5;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
         }
-        .btn-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+
+        .ans-input:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 10px rgba(155, 93, 229, 0.5);
         }
-        button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-            font-weight: bold;
+
+        /* Status Benar / Salah */
+        .ans-input.error {
+            border-color: var(--error-red) !important;
+            background-color: #3b141a !important;
+            animation: shake 0.4s ease;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
         }
-        .btn-primary {
-            background-color: #ff4d6d;
-            color: white;
+
+        .ans-input.success {
+            border-color: var(--success-green) !important;
+            background-color: #112d24 !important;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
         }
-        .btn-primary:hover {
-            background-color: #ff758f;
-            transform: scale(1.05);
-        }
-        .btn-secondary {
-            background-color: #ccc;
-            color: #333;
-        }
-        /* Style khusus untuk tombol yang bisa pindah */
-        #btn-no {
+
+        .feedback-icon {
             position: absolute;
-            transition: all 0.1s ease;
-        }
-        .hide {
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
             display: none;
         }
-        .heart {
-            font-size: 50px;
-            color: #ff4d6d;
-            animation: pulse 1.5s infinite;
+
+        .feedback-message {
+            font-size: 14px;
+            font-family: 'Quicksand', sans-serif;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            display: none;
         }
+
+        /* --- Tombol Pilihan Ganda (Kucing Rafa) --- */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background-color: #3b2c56;
+            border: 2px solid #5a4282;
+            color: var(--text-light);
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 17px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-btn:hover {
+            background-color: #4c396e;
+            border-color: var(--primary-purple);
+        }
+
+        .option-btn.wrong {
+            background-color: var(--error-red);
+            border-color: #b91c1c;
+            animation: shake 0.4s ease;
+        }
+
+        .option-btn.correct {
+            background-color: var(--success-green);
+            border-color: #047857;
+        }
+
+        /* --- Animasi Shake (Salah) --- */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        /* --- Tombol Navigasi Utama --- */
+        .action-btn {
+            background: linear-gradient(135deg, var(--primary-purple), var(--kuromi-pink));
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(241, 91, 181, 0.4);
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(241, 91, 181, 0.6);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        /* --- Progress Bar --- */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #110d1a;
+            border-radius: 10px;
+            margin-top: 30px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-purple), var(--kuromi-pink));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* --- Slide Menghindar Akhir --- */
+        .dodge-container {
+            position: relative;
+            height: 120px;
+            margin-top: 25px;
+        }
+
+        #btn-no {
+            position: absolute;
+            transition: all 0.15s ease;
+            background-color: #4a3c61;
+            border: 2px solid #5d4b7a;
+            box-shadow: none;
+        }
+
+        #btn-yes {
+            position: absolute;
+            left: 10%;
+            width: 120px;
+        }
+
+        /* --- Halaman Sukses --- */
+        .heart-pulse {
+            font-size: 60px;
+            color: var(--kuromi-pink);
+            animation: pulse 1.2s infinite;
+            margin-bottom: 15px;
+        }
+
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.2); }
             100% { transform: scale(1); }
+        }
+
+        /* --- Responsivitas HP --- */
+        @media (max-width: 480px) {
+            .quiz-container {
+                padding: 25px 15px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .question-text {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="q1">
-        <h1>Pertanyaan 1 🤔</h1>
-        <p>Siapa orang yang paling ngangenin di dunia ini?</p>
-        <div class="btn-container">
-            <button class="btn-primary" onclick="wrongAnswer('q1')">Artis Korea</button>
-            <button class="btn-primary" onclick="nextStep('q1', 'q2')">Pacar Aku yang Ganteng/Cantik</button>
-        </div>
+    <!-- Dekorasi Latar Belakang Melayang -->
+    <div class="decorations">
+        <span class="floating-emoji" style="top: 10%; left: 10%; animation-delay: 0s;">💀</span>
+        <span class="floating-emoji" style="top: 15%; right: 15%; animation-delay: 2s;">🖤</span>
+        <span class="floating-emoji" style="top: 75%; left: 12%; animation-delay: 1.5s;">💜</span>
+        <span class="floating-emoji" style="top: 80%; right: 10%; animation-delay: 3s;">😈</span>
+        <span class="floating-emoji" style="top: 45%; left: 5%; animation-delay: 0.5s;">🦇</span>
+        <span class="floating-emoji" style="top: 50%; right: 5%; animation-delay: 2.5s;">⭐</span>
     </div>
 
-    <div id="q2" class="hide">
-        <h1>Pertanyaan 2 🍦</h1>
-        <p>Kalau aku tiba-tiba ngilang tanpa kabar, kamu bakal ngapain?</p>
-        <div class="btn-container">
-            <button class="btn-primary" onclick="nextStep('q2', 'q3')">Nyarain & Spam Chat Sampai Ketemu</button>
-            <button class="btn-primary" onclick="wrongAnswer('q2')">Biarin aja, paling lagi tidur</button>
-        </div>
-    </div>
-
-    <div id="q3" class="hide" style="height: 200px;">
-        <h1>Pertanyaan Terakhir 🥰</h1>
-        <p>Kamu sayang ga sama aku?</p>
-        <div class="btn-container" style="position: relative; height: 100px; width: 100%;">
-            <button class="btn-primary" id="btn-yes" onclick="nextStep('q3', 'final')" style="position: absolute; left: 20px;">Sayang Banget!</button>
-            <button class="btn-secondary" id="btn-no" onmouseover="moveButton()" onclick="moveButton()" style="position: absolute; right: 20px;">Enggak</button>
-        </div>
-    </div>
-
-    <div id="final" class="hide">
-        <div class="heart">❤️</div>
-        <h1>Yeayyy! I Love You!</h1>
-        <p>Makasih ya udah selalu ada buat aku. Have a wonderful day, Sayang! ✨</p>
-    </div>
-</div>
-
-<script>
-    // Fungsi untuk lanjut ke pertanyaan berikutnya
-    function nextStep(currentId, nextId) {
-        document.getElementById(currentId).classList.add('hide');
-        document.getElementById(nextId).classList.remove('hide');
-    }
-
-    // Fungsi kalau milih jawaban yang salah
-    function wrongAnswer(currentId) {
-        if(currentId === 'q1') {
-            alert('Eits, salah! Coba tebak lagi 😜');
-        } else if(currentId === 'q2') {
-            alert('Masa dibiarin sih? Ngambek nih! 🥺');
-        }
-    }
-
-    // Fungsi rahasia biar tombol "Enggak" kabur pas dideketin kursor/diklik
-    function moveButton() {
-        const btnNo = document.getElementById('btn-no');
-        const container = document.querySelector('.container');
+    <!-- Kotak Kuis Utama -->
+    <div class="quiz-container">
         
-        // Menghitung batas aman agar tombol tidak keluar dari kotak container
-        const maxX = container.clientWidth - btnNo.clientWidth - 40;
-        const maxY = container.clientHeight - btnNo.clientHeight - 100;
+        <!-- Header Kuromi -->
+        <div class="kuromi-header">
+            <!-- Karakter Kuromi Estetik -->
+            <img class="kuromi-img" id="kuromi-state-img" src="http://googleusercontent.com/image_collection/image_retrieval/17856758310550894523_0" alt="Kuromi">
+            <div class="skull-divider"><i class="fa-solid fa-skull-crossbones"></i></div>
+            <h1 id="quiz-main-title">Kuromi Quiz</h1>
+            <p class="subtitle" id="quiz-sub-title">Spesial untuk Denaya Cantik 🖤</p>
+        </div>
 
-        const randomX = Math.floor(Math.random() * maxX);
-        const randomY = Math.floor(Math.random() * maxY) + 80; // offset dari atas biar gak nabrak teks
+        <!-- SCREEN MULAI (START) -->
+        <div class="question-card active" id="screen-start">
+            <p class="question-text" style="font-size: 17px; font-family: 'Quicksand', sans-serif;">
+                Hai Denaya! Rafa punya tantangan kuis lucu buat kamu. Jawab semua pertanyaan tentang Rafa dengan benar buat dapetin kejutan spesial ya! Ready? 💀😈
+            </p>
+            <button class="action-btn" onclick="startQuiz()">Mulai Sekarang 💜</button>
+        </div>
 
-        btnNo.style.left = randomX + 'px';
-        btnNo.style.top = randomY + 'px';
-    }
-</script>
+        <!-- PERTANYAAN 1: Warna Kesukaan Rafa -->
+        <div class="question-card" id="q1">
+            <p class="question-text">1. Rafa suka warna apa? 🤔</p>
+            <div class="input-wrapper">
+                <input type="text" class="ans-input" id="input-q1" placeholder="Ketik jawabannya di sini..." autocomplete="off">
+                <span class="feedback-icon" id="icon-q1"></span>
+            </div>
+            <div class="feedback-message" id="feed-q1"></div>
+            <button class="action-btn" id="btn-q1" onclick="validateTextAnswer(1, 'biru', 'Aww salah, warna favorit Rafa bukan itu! 😜')">Kirim Jawaban 🖤</button>
+        </div>
 
+        <!-- PERTANYAAN 2: Nama Kucing Rafa (Pilihan Ganda) -->
+        <div class="question-card" id="q2">
+            <p class="question-text">2. Siapa nama kucing Rafa yang paling besar? 🐱</p>
+            <div class="options-container">
+                <button class="option-btn" id="opt-incess" onclick="selectOption('Incess', false, this)">
+                    <span>Incess</span> <i class="fa-solid" id="icon-opt-incess"></i>
+                </button>
+                <button class="option-btn" id="opt-kroos" onclick="selectOption('Kroos', true, this)">
+                    <span>Kroos</span> <i class="fa-solid" id="icon-opt-kroos"></i>
+                </button>
+                <button class="option-btn" id="opt-abu" onclick="selectOption('Abu', false, this)">
+                    <span>Abu</span> <i class="fa-solid" id="icon-opt-abu"></i>
+                </button>
+            </div>
+            <div class="feedback-message" id="feed-q2"></div>
+            <button class="action-btn" id="btn-next-q2" style="display: none;" onclick="goToNext(2)">Lanjut Pertanyaan berikutnya ✨</button>
+        </div>
+
+        <!-- PERTANYAAN 3: Tanggal Lahir Rafa -->
+        <div class="question-card" id="q3">
+            <p class="question-text">3. Berapa tanggal lahir Rafa? 🎂</p>
+            <div class="input-wrapper">
+                <input type="text" class="ans-input" id="input-q3" placeholder="Contoh: 5 April" autocomplete="off">
+                <span class="feedback-icon" id="icon-q3"></span>
+            </div>
+            <div class="feedback-message" id="feed-q3"></div>
+            <button class="action-btn" id="btn-q3" onclick="validateDateAnswer()">Kirim Jawaban 🖤</button>
+        </div>
+
+        <!-- PERTANYAAN 4: Hobby Rafa -->
+        <div class="question-card" id="q4">
+            <p class="question-text">4. Apa Hobby Rafa? 🏹</p>
+            <div class="input-wrapper">
+                <input type="text" class="ans-input" id="input-q4" placeholder="Ketik hobbynya..." autocomplete="off">
+                <span class="feedback-icon" id="icon-q4"></span>
+            </div>
+            <div class="feedback-message" id="feed-q4"></div>
+            <button class="action-btn" id="btn-q4" onclick="validateTextAnswer(4, 'panahan', 'Duh tebakanmu meleset nih, bukan itu! 🏹❌')">Kirim Jawaban 🖤</button>
+        </div>
+
+        <!-- PERTANYAAN 5: Mobil Kesukaan Rafa -->
+        <div class="question-card" id="q5">
+            <p class="question-text">5. Rafa suka mobil apa? 🏎️</p>
+            <div class="input-wrapper">
+                <input type="text" class="ans-input" id="input-q5" placeholder="Merk mobil impian Rafa..." autocomplete="off">
+                <span class="feedback-icon" id="icon-q5"></span>
+            </div>
+            <div class="feedback-message" id="feed-q5"></div>
+            <button class="action-btn" id="btn-q5" onclick="validateTextAnswer(5, 'ferrari', 'Bukan itu sayangg, coba ingat mobil warna merah! 🏎️❌')">Kirim Jawaban 🖤</button>
+        </div>
+
+        <!-- SCREEN INTERAKTIF (PERNYATAAN CINTA & TOMBOL MENGHINDAR) -->
+        <div class="question-card" id="screen-love">
+            <p class="question-text">Yeayy kuisnya beres! Tapi sebelum dapet hadiahnya... Denaya sayang Rafa gak? 🥺💜</p>
+            <div class="dodge-container">
+                <button class="action-btn" id="btn-yes" onclick="finishQuiz()">Sayang Banget! 🥰</button>
+                <button class="action-btn" id="btn-no" onmouseover="dodgeButton()" onclick="dodgeButton()">Enggak 😜</button>
+            </div>
+        </div>
+
+        <!-- SCREEN AKHIR (SUCCESS CELEBRATION) -->
+        <div class="question-card" id="screen-success">
+            <div class="heart-pulse"><i class="fa-solid fa-heart"></i></div>
+            <h1 style="color: var(--kuromi-pink); margin-bottom: 15px;">Happy End! 💖👑</h1>
+            <p class="question-text" style="font-size: 16px; font-family: 'Quicksand', sans-serif; line-height: 1.6; margin-bottom: 25px;">
+                Yayyy! Denaya hebat banget udah berhasil menjawab semuanya dengan sempurna! Makasih ya sayang udah kenal Rafa sebaik ini. Rafa juga sayangggg banget sama Denaya! 🖤😈✨
+            </p>
+            <div class="skull-divider"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <p style="font-size: 14px; color: #a881d8; font-style: italic;">Made with love by Rafa</p>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+    </div>
+
+    <!-- Script Logika Game Interaktif -->
+    <script>
+        let currentStep = 0;
+        const totalSteps = 5;
+
+        // Sound Engine (Web Audio API) untuk menghasilkan suara retro 8-bit tanpa file eksternal
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            // Memastikan audio context aktif kembali setelah interaksi pengguna
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                // Suara nada naik manis (Benar)
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.35);
+            } else if (type === 'wrong') {
+                // Suara buzz mendengung rendah (Salah)
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.32);
+            } else if (type === 'cheer') {
+                // Suara perayaan kecil di akhir
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.1);
+                osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.5);
+            }
+        }
+
+        // Memulai Kuis
+        function startQuiz() {
+            document.getElementById('screen-start').classList.remove('active');
+            document.getElementById('q1').classList.add('active');
+            document.getElementById('progress-container').style.display = 'block';
+            updateProgress(1);
+        }
+
+        // Memperbarui Status Progress Bar
+        function updateProgress(step) {
+            currentStep = step;
+            const percent = (step / totalSteps) * 100;
+            document.getElementById('progress-bar').style.width = percent + '%';
+        }
+
+        // Navigasi ke Pertanyaan Selanjutnya
+        function goToNext(currentId) {
+            document.getElementById(`q${currentId}`).classList.remove('active');
+            const nextStepId = currentId + 1;
+            
+            if (nextStepId <= totalSteps) {
+                document.getElementById(`q${nextStepId}`).classList.add('active');
+                updateProgress(nextStepId);
+                // Ubah gambar Kuromi biar ganti gaya secara dinamis
+                if (nextStepId === 3) {
+                    document.getElementById('kuromi-state-img').src = 'http://googleusercontent.com/image_collection/image_retrieval/17856758310550894523_1';
+                } else if (nextStepId === 5) {
+                    document.getElementById('kuromi-state-img').src = 'http://googleusercontent.com/image_collection/image_retrieval/17856758310550894523_2';
+                }
+            } else {
+                // Beres Kuis masuk ke layar ungkapan sayang
+                document.getElementById('progress-container').style.display = 'none';
+                document.getElementById('screen-love').classList.add('active');
+                document.getElementById('quiz-main-title').innerText = "Spesial untuk Denaya";
+                document.getElementById('quiz-sub-title').innerText = "Please answer honestly... 🥺";
+            }
+        }
+
+        // VALIDASI JAWABAN TEKS (Untuk Q1, Q4, Q5)
+        function validateTextAnswer(questionNum, correctAnswer, wrongMessage) {
+            const inputEl = document.getElementById(`input-q${questionNum}`);
+            const iconEl = document.getElementById(`icon-q${questionNum}`);
+            const feedbackEl = document.getElementById(`feed-q${questionNum}`);
+            const btnEl = document.getElementById(`btn-q${questionNum}`);
+            
+            const userAnswer = inputEl.value.trim().toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                // JAWABAN BENAR
+                playSound('correct');
+                inputEl.classList.remove('error');
+                inputEl.classList.add('success');
+                inputEl.disabled = true;
+
+                iconEl.className = "feedback-icon fa-solid fa-circle-check";
+                iconEl.style.color = "var(--success-green)";
+                iconEl.style.display = "block";
+
+                feedbackEl.innerText = "Jawaban Benar! Kamu emang paling pinter! 💜✨";
+                feedbackEl.style.color = "var(--success-green)";
+                feedbackEl.style.display = "block";
+
+                // Ganti tombol kirim menjadi tombol Lanjut
+                btnEl.innerText = "Lanjut 💜";
+                btnEl.onclick = function() {
+                    goToNext(questionNum);
+                };
+            } else {
+                // JAWABAN SALAH
+                playSound('wrong');
+                inputEl.classList.add('error');
+                
+                iconEl.className = "feedback-icon fa-solid fa-circle-xmark";
+                iconEl.style.color = "var(--error-red)";
+                iconEl.style.display = "block";
+
+                feedbackEl.innerText = wrongMessage;
+                feedbackEl.style.color = "var(--error-red)";
+                feedbackEl.style.display = "block";
+
+                // Menghapus efek getar merah setelah animasi selesai agar bisa di-trigger ulang jika dicoba lagi
+                setTimeout(() => {
+                    inputEl.classList.remove('error');
+                }, 400);
+            }
+        }
+
+        // JAWABAN KHUSUS PERTANYAAN KUCING (Q2)
+        function selectOption(choiceName, isCorrect, clickedBtn) {
+            const feedbackEl = document.getElementById('feed-q2');
+            const allOptionBtns = document.querySelectorAll('#q2 .option-btn');
+
+            // Reset status semua tombol pilihan ganda
+            allOptionBtns.forEach(btn => {
+                btn.className = "option-btn";
+                btn.disabled = true; // Nonaktifkan agar tidak bisa spam klik
+                const icon = btn.querySelector('.fa-solid');
+                if (icon) icon.className = "fa-solid";
+            });
+
+            if (isCorrect) {
+                // BENAR
+                playSound('correct');
+                clickedBtn.classList.add('correct');
+                const checkIcon = clickedBtn.querySelector('.fa-solid');
+                checkIcon.classList.add('fa-circle-check');
+
+                feedbackEl.innerText = "Yess! Kroos adalah si gembrot kesayangan Rafa! 🐱💖";
+                feedbackEl.style.color = "var(--success-green)";
+                feedbackEl.style.display = "block";
+
+                document.getElementById('btn-next-q2').style.display = "block";
+            } else {
+                // SALAH
+                playSound('wrong');
+                clickedBtn.classList.add('wrong');
+                const crossIcon = clickedBtn.querySelector('.fa-solid');
+                crossIcon.classList.add('fa-circle-xmark');
+
+                feedbackEl.innerText = "Yahh salah, itu bukan kucing Rafa yang paling gede! Coba lagi yaa 🥺";
+                feedbackEl.style.color = "var(--error-red)";
+                feedbackEl.style.display = "block";
+
+                // Izinkan memilih ulang setelah 1 detik
+                setTimeout(() => {
+                    allOptionBtns.forEach(btn => {
+                        btn.disabled = false;
+                        btn.className = "option-btn";
+                        const icon = btn.querySelector('.fa-solid');
+                        if (icon) icon.className = "fa-solid";
+                    });
+                }, 1000);
+            }
+        }
+
+        // JAWABAN KHUSUS TANGGAL LAHIR (Q3)
+        function validateDateAnswer() {
+            const inputEl = document.getElementById('input-q3');
+            const iconEl = document.getElementById('icon-q3');
+            const feedbackEl = document.getElementById('feed-q3');
+            const btnEl = document.getElementById('btn-q3');
+            
+            const rawAnswer = inputEl.value.trim().toLowerCase();
+            
+            // Validasi fleksibel (menerima "5 april", "05 april", "05-april", atau "5-april")
+            const isCorrect = (
+                rawAnswer === "5 april" || 
+                rawAnswer === "05 april" || 
+                rawAnswer === "5-april" || 
+                rawAnswer === "05-april"
+            );
+
+            if (isCorrect) {
+                playSound('correct');
+                inputEl.classList.remove('error');
+                inputEl.classList.add('success');
+                inputEl.disabled = true;
+
+                iconEl.className = "feedback-icon fa-solid fa-circle-check";
+                iconEl.style.color = "var(--success-green)";
+                iconEl.style.display = "block";
+
+                feedbackEl.innerText = "Yeyy bener! Kamu selalu inget tanggal lahir Rafa 🎂🖤";
+                feedbackEl.style.color = "var(--success-green)";
+                feedbackEl.style.display = "block";
+
+                btnEl.innerText = "Lanjut 💜";
+                btnEl.onclick = function() {
+                    goToNext(3);
+                };
+            } else {
+                playSound('wrong');
+                inputEl.classList.add('error');
+                
+                iconEl.className = "feedback-icon fa-solid fa-circle-xmark";
+                iconEl.style.color = "var(--error-red)";
+                iconEl.style.display = "block";
+
+                feedbackEl.innerText = "Aduh kok lupa tanggal ultah Rafa sih... 🥺";
+                feedbackEl.style.color = "var(--error-red)";
+                feedbackEl.style.display = "block";
+
+                setTimeout(() => {
+                    inputEl.classList.remove('error');
+                }, 400);
+            }
+        }
+
+        // LOGIKA TOMBOL MENGHINDAR (DODGE BUTTON)
+        function dodgeButton() {
+            playSound('wrong');
+            const btnNo = document.getElementById('btn-no');
+            
+            // Menentukan area pergeseran yang aman agar tidak keluar kotak container
+            const container = document.querySelector('.quiz-container');
+            const maxX = container.clientWidth - btnNo.clientWidth - 40;
+            const maxY = 120 - btnNo.clientHeight - 20;
+
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY) + 10;
+
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+        }
+
+        // TAHAP AKHIR KETIKA DENAYA MENEKAN SAYANG BANGET
+        function finishQuiz() {
+            playSound('cheer');
+            document.getElementById('screen-love').classList.remove('active');
+            document.getElementById('screen-success').classList.add('active');
+            
+            // Ubah header ke ucapan terakhir
+            document.getElementById('quiz-main-title').innerText = "I Love You, Denaya! ❤️";
+            document.getElementById('quiz-sub-title').innerText = "Selamat, kamu pacar terbaik di dunia!";
+            
+            // Trigger efek hujan hati kelap-kelip yang meriah
+            startHeartsCelebration();
+        }
+
+        // Efek Visual Taburan Hati Tambahan Saat Selesai
+        function startHeartsCelebration() {
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerText = '💖';
+                    heart.style.position = 'fixed';
+                    heart.style.fontSize = Math.floor(Math.random() * 20 + 15) + 'px';
+                    heart.style.left = Math.random() * window.innerWidth + 'px';
+                    heart.style.top = window.innerHeight + 'px';
+                    heart.style.zIndex = '999';
+                    heart.style.transition = 'all 3s ease-out';
+                    heart.style.pointerEvents = 'none';
+                    
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.style.transform = `translateY(-${window.innerHeight + 100}px) translateX(${Math.random() * 100 - 50}px)`;
+                        heart.style.opacity = '0';
+                    }, 50);
+
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 3050);
+                }, i * 150);
+            }
+        }
+    </script>
 </body>
 </html>
